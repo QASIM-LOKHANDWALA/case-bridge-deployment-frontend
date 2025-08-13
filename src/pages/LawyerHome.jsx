@@ -10,6 +10,8 @@ import {
     Briefcase,
     Home,
     Wallet,
+    Menu,
+    X,
 } from "lucide-react";
 import Profile from "../components/lawyerHome/Profile";
 import useAuth from "../hooks/useAuth";
@@ -26,6 +28,7 @@ const isDev = import.meta.env.VITE_DEV;
 const LawyerHome = () => {
     const [activeTab, setActiveTab] = useState("profile");
     const [showNotifications, setShowNotifications] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [clients, setClients] = useState([]);
     const [cases, setCases] = useState([]);
     const { user, token, error, logout } = useAuth();
@@ -112,6 +115,11 @@ const LawyerHome = () => {
         }
     };
 
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setSidebarOpen(false);
+    };
+
     const renderContent = () => {
         switch (activeTab) {
             case "profile":
@@ -144,39 +152,39 @@ const LawyerHome = () => {
         }
     };
 
-    const notifications = [
+    const navigationItems = [
+        { id: "profile", label: "Profile", icon: User },
+        { id: "cases", label: "My Cases", icon: Briefcase },
+        { id: "clients", label: "Clients", icon: Users },
+        { id: "appointments", label: "Appointments", icon: Calendar },
+        { id: "payments", label: "Payments", icon: Wallet },
         {
-            id: 1,
-            type: "hearing",
-            title: "Hearing Reminder",
-            message: "Property Dispute case hearing tomorrow at 10:30 AM",
-            time: "2 hours ago",
-            read: false,
-        },
-        {
-            id: 2,
-            type: "document",
-            title: "Document Uploaded",
-            message: "Client uploaded new evidence documents",
-            time: "4 hours ago",
-            read: false,
-        },
-        {
-            id: 3,
-            type: "payment",
-            title: "Payment Received",
-            message: "₹25,000 received from Mr. Arvind Sharma",
-            time: "1 day ago",
-            read: true,
+            id: "messages",
+            label: "Messages",
+            icon: MessageCircle,
+            action: () => navigate("/chat"),
         },
     ];
 
     return (
         <div className="h-screen flex flex-col bg-gray-900">
-            <header className="bg-gray-800 border-b border-gray-700 px-4 py-3">
+            {/* Header */}
+            <header className="bg-gray-800 border-b border-gray-700 px-4 py-3 relative z-30">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                        <div className="text-2xl font-bold text-white">
+                        {/* Mobile menu button */}
+                        <button
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                        >
+                            {sidebarOpen ? (
+                                <X className="w-5 h-5" />
+                            ) : (
+                                <Menu className="w-5 h-5" />
+                            )}
+                        </button>
+
+                        <div className="text-xl md:text-2xl font-bold text-white">
                             Case<span className="text-blue-400">Bridge</span>
                         </div>
                         <div className="hidden md:block text-sm text-gray-400">
@@ -184,71 +192,13 @@ const LawyerHome = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <button
-                                onClick={() =>
-                                    setShowNotifications(!showNotifications)
-                                }
-                                className="text-gray-400 hover:text-white p-2 relative"
-                            >
-                                <Bell className="w-5 h-5" />
-                                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white">
-                                    {
-                                        notifications.filter((n) => !n.read)
-                                            .length
-                                    }
-                                </span>
-                            </button>
-
-                            {showNotifications && (
-                                <div className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
-                                    <div className="p-4 border-b border-gray-700">
-                                        <h4 className="font-semibold text-white">
-                                            Notifications
-                                        </h4>
-                                    </div>
-                                    <div className="max-h-64 overflow-y-auto">
-                                        {notifications.map((notification) => (
-                                            <div
-                                                key={notification.id}
-                                                className="p-3 border-b border-gray-700 hover:bg-gray-700"
-                                            >
-                                                <div className="flex items-start space-x-3">
-                                                    <div
-                                                        className={`w-2 h-2 rounded-full mt-2 ${
-                                                            notification.read
-                                                                ? "bg-gray-400"
-                                                                : "bg-blue-400"
-                                                        }`}
-                                                    ></div>
-                                                    <div className="flex-1">
-                                                        <p className="text-sm font-medium text-white">
-                                                            {notification.title}
-                                                        </p>
-                                                        <p className="text-xs text-gray-400">
-                                                            {
-                                                                notification.message
-                                                            }
-                                                        </p>
-                                                        <p className="text-xs text-gray-500 mt-1">
-                                                            {notification.time}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                                <User className="w-4 h-4 text-gray-400" />
+                    <div className="flex items-center space-x-2 md:space-x-4">
+                        <div className="flex items-center space-x-2 md:space-x-3">
+                            <div className="w-6 h-6 md:w-8 md:h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                                <User className="w-3 h-3 md:w-4 md:h-4 text-gray-400" />
                             </div>
-                            <div className="hidden md:block">
-                                <p className="text-sm font-medium text-white">
+                            <div className="hidden sm:block">
+                                <p className="text-xs md:text-sm font-medium text-white truncate max-w-24 md:max-w-none">
                                     {user.lawyer_profile.full_name}
                                 </p>
                                 <p className="text-xs text-gray-400">
@@ -260,98 +210,95 @@ const LawyerHome = () => {
                 </div>
             </header>
 
-            <div className="flex flex-1 overflow-hidden">
-                <nav className="w-64 bg-gray-800 border-r border-gray-700 overflow-y-auto">
+            <div className="flex flex-1 overflow-hidden relative">
+                {sidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                )}
+
+                <nav
+                    className={`
+                    fixed md:relative
+                    left-0 top-0 h-full
+                    w-64 md:w-64
+                    bg-gray-800 border-r border-gray-700
+                    transform transition-transform duration-300 ease-in-out
+                    z-30 md:z-0
+                    overflow-y-auto
+                    ${
+                        sidebarOpen
+                            ? "translate-x-0"
+                            : "-translate-x-full md:translate-x-0"
+                    }
+                    pt-16 md:pt-0
+                `}
+                >
                     <div className="p-4">
                         <div className="space-y-2">
-                            <button
-                                onClick={() => setActiveTab("profile")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "profile"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <User className="w-5 h-5" />
-                                <span>Profile</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("cases")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "cases"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Briefcase className="w-5 h-5" />
-                                <span>My Cases</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("clients")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "clients"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Users className="w-5 h-5" />
-                                <span>Clients</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("appointments")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "appointments"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Calendar className="w-5 h-5" />
-                                <span>Appointments</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("payments")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "payments"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Wallet className="w-5 h-5" />
-                                <span>Payments</span>
-                            </button>
-
-                            <button
-                                onClick={() => navigate("/chat")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "messages"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <MessageCircle className="w-5 h-5" />
-                                <span>Messages</span>
-                            </button>
+                            {navigationItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() =>
+                                        item.action
+                                            ? item.action()
+                                            : handleTabChange(item.id)
+                                    }
+                                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                                        activeTab === item.id
+                                            ? "bg-blue-600 text-white"
+                                            : "text-gray-400 hover:text-white hover:bg-gray-700"
+                                    }`}
+                                >
+                                    <item.icon className="w-5 h-5 flex-shrink-0" />
+                                    <span className="truncate">
+                                        {item.label}
+                                    </span>
+                                </button>
+                            ))}
 
                             <div className="border-t border-gray-700 pt-4 mt-4">
                                 <button
                                     onClick={handleLogout}
                                     className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
                                 >
-                                    <LogOut className="w-5 h-5" />
-                                    <span>Logout</span>
+                                    <LogOut className="w-5 h-5 flex-shrink-0" />
+                                    <span className="truncate">Logout</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                <main className="flex-1 overflow-y-auto p-6">
-                    {renderContent()}
+                <main className="flex-1 overflow-y-auto p-3 md:p-6">
+                    <div className="max-w-full">{renderContent()}</div>
                 </main>
+            </div>
+
+            <div className="md:hidden bg-gray-800 border-t border-gray-700 px-2 py-2">
+                <div className="flex justify-around">
+                    {navigationItems.slice(0, 5).map((item) => (
+                        <button
+                            key={item.id}
+                            onClick={() =>
+                                item.action
+                                    ? item.action()
+                                    : handleTabChange(item.id)
+                            }
+                            className={`flex flex-col items-center space-y-1 px-2 py-2 rounded-lg transition-colors ${
+                                activeTab === item.id
+                                    ? "text-blue-400"
+                                    : "text-gray-500 hover:text-gray-300"
+                            }`}
+                        >
+                            <item.icon className="w-4 h-4" />
+                            <span className="text-xs truncate max-w-16">
+                                {item.label}
+                            </span>
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

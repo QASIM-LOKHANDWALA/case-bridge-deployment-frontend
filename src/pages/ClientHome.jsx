@@ -13,6 +13,7 @@ import {
     Users,
     X,
     Wallet,
+    Menu,
 } from "lucide-react";
 import LawyerCard from "../components/clientHome/LawyerCard";
 import useAuth from "../hooks/useAuth";
@@ -28,6 +29,7 @@ const isDev = import.meta.env.VITE_DEV;
 const ClientHome = () => {
     const [activeTab, setActiveTab] = useState("home");
     const [showNotifications, setShowNotifications] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [lawyers, setLawyers] = useState([]);
     const [requests, setRequests] = useState([]);
     const { user, token, logout } = useAuth();
@@ -81,6 +83,11 @@ const ClientHome = () => {
         }
     };
 
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setSidebarOpen(false);
+    };
+
     useEffect(() => {
         fetchLawyers();
         fetchRequest();
@@ -99,33 +106,6 @@ const ClientHome = () => {
         const spec = specializations.find((s) => s.value === value);
         return spec ? spec.label : value;
     };
-
-    const notifications = [
-        {
-            id: 1,
-            type: "request",
-            title: "Request Accepted",
-            message: "Adv. Sharma accepted your hire request",
-            time: "2 hours ago",
-            read: false,
-        },
-        {
-            id: 2,
-            type: "appointment",
-            title: "Appointment Scheduled",
-            message: "Meeting scheduled for tomorrow at 2:00 PM",
-            time: "4 hours ago",
-            read: false,
-        },
-        {
-            id: 3,
-            type: "document",
-            title: "Document Request",
-            message: "Your lawyer requested additional documents",
-            time: "1 day ago",
-            read: true,
-        },
-    ];
 
     const renderMyLawyers = () => {
         const handleRatingSubmit = (lawyerId, rating, newLawyerRating) => {
@@ -147,11 +127,11 @@ const ClientHome = () => {
         return (
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold text-white">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white">
                         My Lawyers
                     </h2>
                 </div>
-                <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                     {requests
                         .filter((req) => req.status === "accepted")
                         .map((request) => {
@@ -177,11 +157,11 @@ const ClientHome = () => {
                 {requests.filter((req) => req.status === "accepted").length ===
                     0 && (
                     <div className="text-center py-12">
-                        <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold mb-2 text-white">
+                        <Users className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg md:text-xl font-semibold mb-2 text-white">
                             No hired lawyers yet
                         </h3>
-                        <p className="text-gray-400">
+                        <p className="text-gray-400 text-sm md:text-base px-4">
                             Start by finding and hiring lawyers from the home
                             tab.
                         </p>
@@ -194,14 +174,16 @@ const ClientHome = () => {
     const renderCases = () => (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold text-white">My Cases</h2>
+                <h2 className="text-xl md:text-2xl font-semibold text-white">
+                    My Cases
+                </h2>
             </div>
             <div className="text-center py-12">
-                <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2 text-white">
+                <FileText className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg md:text-xl font-semibold mb-2 text-white">
                     No cases yet
                 </h3>
-                <p className="text-gray-400">
+                <p className="text-gray-400 text-sm md:text-base px-4">
                     Your active cases will be displayed here.
                 </p>
             </div>
@@ -241,12 +223,37 @@ const ClientHome = () => {
         }
     };
 
+    const navigationItems = [
+        { id: "home", label: "Find Lawyers", icon: Home },
+        { id: "my-lawyers", label: "My Lawyers", icon: Users },
+        { id: "cases", label: "My Cases", icon: FileText },
+        { id: "appointments", label: "Appointments", icon: Calendar },
+        { id: "payments", label: "Payments", icon: Wallet },
+        {
+            id: "messages",
+            label: "Messages",
+            icon: MessageCircle,
+            action: () => navigate("/chat"),
+        },
+    ];
+
     return (
         <div className="h-screen flex flex-col bg-gray-900">
-            <header className="bg-gray-800 border-b border-gray-700 px-4 py-3">
+            <header className="bg-gray-800 border-b border-gray-700 px-4 py-3 relative z-30">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                        <div className="text-2xl font-bold text-white">
+                        <button
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                        >
+                            {sidebarOpen ? (
+                                <X className="w-5 h-5" />
+                            ) : (
+                                <Menu className="w-5 h-5" />
+                            )}
+                        </button>
+
+                        <div className="text-xl md:text-2xl font-bold text-white">
                             Case<span className="text-blue-400">Bridge</span>
                         </div>
                         <div className="hidden md:block text-sm text-gray-400">
@@ -254,71 +261,13 @@ const ClientHome = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <button
-                                onClick={() =>
-                                    setShowNotifications(!showNotifications)
-                                }
-                                className="text-gray-400 hover:text-white p-2 relative"
-                            >
-                                <Bell className="w-5 h-5" />
-                                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white">
-                                    {
-                                        notifications.filter((n) => !n.read)
-                                            .length
-                                    }
-                                </span>
-                            </button>
-
-                            {showNotifications && (
-                                <div className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
-                                    <div className="p-4 border-b border-gray-700">
-                                        <h4 className="font-semibold text-white">
-                                            Notifications
-                                        </h4>
-                                    </div>
-                                    <div className="max-h-64 overflow-y-auto">
-                                        {notifications.map((notification) => (
-                                            <div
-                                                key={notification.id}
-                                                className="p-3 border-b border-gray-700 hover:bg-gray-700"
-                                            >
-                                                <div className="flex items-start space-x-3">
-                                                    <div
-                                                        className={`w-2 h-2 rounded-full mt-2 ${
-                                                            notification.read
-                                                                ? "bg-gray-400"
-                                                                : "bg-blue-400"
-                                                        }`}
-                                                    ></div>
-                                                    <div className="flex-1">
-                                                        <p className="text-sm font-medium text-white">
-                                                            {notification.title}
-                                                        </p>
-                                                        <p className="text-xs text-gray-400">
-                                                            {
-                                                                notification.message
-                                                            }
-                                                        </p>
-                                                        <p className="text-xs text-gray-500 mt-1">
-                                                            {notification.time}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                                <User className="w-4 h-4 text-gray-400" />
+                    <div className="flex items-center space-x-2 md:space-x-4">
+                        <div className="flex items-center space-x-2 md:space-x-3">
+                            <div className="w-6 h-6 md:w-8 md:h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                                <User className="w-3 h-3 md:w-4 md:h-4 text-gray-400" />
                             </div>
-                            <div className="hidden md:block">
-                                <p className="text-sm font-medium text-white">
+                            <div className="hidden sm:block">
+                                <p className="text-xs md:text-sm font-medium text-white truncate max-w-24 md:max-w-none">
                                     {user?.general_profile?.full_name}
                                 </p>
                                 <p className="text-xs text-gray-400">Client</p>
@@ -328,94 +277,103 @@ const ClientHome = () => {
                 </div>
             </header>
 
-            <div className="flex flex-1 overflow-hidden">
-                <nav className="w-64 bg-gray-800 border-r border-gray-700 overflow-y-auto">
+            <div className="flex flex-1 overflow-hidden relative">
+                {sidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                )}
+
+                <nav
+                    className={`
+                    fixed md:relative
+                    left-0 top-0 h-full
+                    w-64 md:w-64
+                    bg-gray-800 border-r border-gray-700
+                    transform transition-transform duration-300 ease-in-out
+                    z-30 md:z-0
+                    overflow-y-auto
+                    ${
+                        sidebarOpen
+                            ? "translate-x-0"
+                            : "-translate-x-full md:translate-x-0"
+                    }
+                    pt-16 md:pt-0
+                `}
+                >
                     <div className="p-4">
                         <div className="space-y-2">
-                            <button
-                                onClick={() => setActiveTab("home")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "home"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Home className="w-5 h-5" />
-                                <span>Find Lawyers</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("my-lawyers")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "my-lawyers"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Users className="w-5 h-5" />
-                                <span>My Lawyers</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("cases")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "cases"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <FileText className="w-5 h-5" />
-                                <span>My Cases</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("appointments")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "appointments"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Calendar className="w-5 h-5" />
-                                <span>Appointments</span>
-                            </button>
-
-                            <button
-                                onClick={() => setActiveTab("payments")}
-                                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                                    activeTab === "payments"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
-                                }`}
-                            >
-                                <Wallet className="w-5 h-5" />
-                                <span>Payments</span>
-                            </button>
-
-                            <button
-                                onClick={() => navigate("/chat")}
-                                className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
-                            >
-                                <MessageCircle className="w-5 h-5" />
-                                <span>Messages</span>
-                            </button>
+                            {navigationItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() =>
+                                        item.action
+                                            ? item.action()
+                                            : handleTabChange(item.id)
+                                    }
+                                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                                        activeTab === item.id
+                                            ? "bg-blue-600 text-white"
+                                            : "text-gray-400 hover:text-white hover:bg-gray-700"
+                                    }`}
+                                >
+                                    <item.icon className="w-5 h-5 flex-shrink-0" />
+                                    <span className="truncate">
+                                        {item.label}
+                                    </span>
+                                </button>
+                            ))}
 
                             <div className="border-t border-gray-700 pt-4 mt-4">
                                 <button
                                     onClick={handleLogout}
                                     className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
                                 >
-                                    <LogOut className="w-5 h-5" />
-                                    <span>Logout</span>
+                                    <LogOut className="w-5 h-5 flex-shrink-0" />
+                                    <span className="truncate">Logout</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                <main className="flex-1 overflow-y-auto p-6">
-                    {renderContent()}
+                <main className="flex-1 overflow-y-auto p-3 md:p-6">
+                    <div className="max-w-full">{renderContent()}</div>
                 </main>
+            </div>
+
+            <div className="md:hidden bg-gray-800 border-t border-gray-700 px-2 py-2">
+                <div className="flex justify-around">
+                    {navigationItems.slice(0, 5).map((item) => (
+                        <button
+                            key={item.id}
+                            onClick={() =>
+                                item.action
+                                    ? item.action()
+                                    : handleTabChange(item.id)
+                            }
+                            className={`flex flex-col items-center space-y-1 px-2 py-2 rounded-lg transition-colors ${
+                                activeTab === item.id
+                                    ? "text-blue-400"
+                                    : "text-gray-500 hover:text-gray-300"
+                            }`}
+                        >
+                            <item.icon className="w-4 h-4" />
+                            <span className="text-xs truncate max-w-16">
+                                {item.id === "home"
+                                    ? "Find"
+                                    : item.id === "my-lawyers"
+                                    ? "Lawyers"
+                                    : item.id === "cases"
+                                    ? "Cases"
+                                    : item.id === "appointments"
+                                    ? "Appts"
+                                    : item.label}
+                            </span>
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -24,7 +24,6 @@ const ChatPage = () => {
     const [messages, setMessages] = useState([]);
     const [newText, setNewText] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-    const [isBotTyping, setIsBotTyping] = useState(false);
     const [showMobileChat, setShowMobileChat] = useState(false);
     const [onlineUsers, setOnlineUsers] = useState(new Set());
     const messagesEndRef = useRef(null);
@@ -82,7 +81,6 @@ const ChatPage = () => {
             );
             setConversation({ id: res.data.conversation_id, ...contact });
             setMessages([]);
-            setIsBotTyping(false);
             setShowMobileChat(true);
             fetchMessages(res.data.conversation_id);
             startPollingMessages(res.data.conversation_id);
@@ -147,12 +145,7 @@ const ChatPage = () => {
     const sendMessage = async () => {
         if (!newText.trim()) return;
 
-        const isBot = conversation?.isBot === true;
-        const url = isBot
-            ? `/api/chat/conversations/${conversation.id}/legal-bot/`
-            : `/api/chat/conversations/${conversation.id}/send/`;
-
-        if (isDev) console.log("Sending to:", url, "IsBot:", isBot);
+        const url = `/api/chat/conversations/${conversation.id}/send/`;
 
         const tempMessage = {
             id: Date.now(),
@@ -164,10 +157,6 @@ const ChatPage = () => {
         };
 
         setMessages((prev) => [...prev, tempMessage]);
-
-        if (isBot) {
-            setIsBotTyping(true);
-        }
 
         const messageText = newText;
         setNewText("");
@@ -182,22 +171,10 @@ const ChatPage = () => {
                     },
                 }
             );
-
-            if (isBot) {
-                setMessages((prev) => [
-                    ...prev.slice(0, -1),
-                    res.data.user_message,
-                    res.data.bot_reply,
-                ]);
-                setIsBotTyping(false);
-            } else {
-                // setMessages((prev) => [...prev.slice(0, -1)]);
-            }
         } catch (err) {
             if (isDev) console.error("Message failed", err);
             setMessages((prev) => prev.slice(0, -1));
             setNewText(messageText);
-            setIsBotTyping(false);
         }
     };
 
@@ -227,34 +204,6 @@ const ChatPage = () => {
         }
     };
 
-    const openBotConversation = async () => {
-        try {
-            const res = await axiosInstance.post(
-                "/api/chat/bot/init/",
-                {},
-                {
-                    headers: {
-                        Authorization: `Token ${token}`,
-                    },
-                }
-            );
-            const botInfo = {
-                user_id: 3,
-                full_name: "Legal Assistant",
-                email: "legalbot@casebridge.com",
-                isBot: true,
-            };
-            setConversation({ id: res.data.conversation_id, ...botInfo });
-            setMessages([]);
-            setIsBotTyping(false);
-            setShowMobileChat(true);
-            fetchMessages(res.data.conversation_id);
-            startPollingMessages(res.data.conversation_id);
-        } catch (err) {
-            if (isDev) console.error("Bot init failed", err);
-        }
-    };
-
     const isOnline = (userId) => {
         return onlineUsers.has(userId);
     };
@@ -264,31 +213,24 @@ const ChatPage = () => {
         return "Last seen recently";
     };
 
-    const ContactItem = ({ contact, isBot = false }) => (
+    const ContactItem = ({ contact }) => (
         <button
             className={`w-full text-left p-4 hover:bg-gray-700 transition-all duration-200 ${
-                conversation?.user_id === contact.user_id ||
-                (conversation?.isBot && isBot)
+                conversation?.user_id === contact.user_id
                     ? "bg-gray-700 border-r-4 border-r-blue-500"
                     : ""
             }`}
             onClick={() => {
-                isBot ? openBotConversation() : openConversation(contact);
-                if (isDev) console.log(isBot, contact);
+                openConversation(contact);
+                if (isDev) console.log(contact);
             }}
         >
             <div className="flex items-center space-x-3">
                 <div className="relative">
                     <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
-                            isBot
-                                ? "bg-gradient-to-br from-blue-500 to-purple-600"
-                                : "bg-gray-600"
-                        }`}
+                        className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden bg-gray-600`}
                     >
-                        {isBot ? (
-                            <Bot className="w-6 h-6 text-white" />
-                        ) : contact.profile_picture ? (
+                        {contact.profile_picture ? (
                             <img
                                 src={contact.profile_picture}
                                 alt={contact.full_name}
@@ -298,21 +240,19 @@ const ChatPage = () => {
                             <User className="w-6 h-6 text-gray-400" />
                         )}
                     </div>
-                    {!isBot && isOnline(contact.user_id) && (
+                    {isOnline(contact.user_id) && (
                         <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></div>
                     )}
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                         <h3 className="font-medium text-white truncate">
-                            {isBot ? "Legal Assistant" : contact.full_name}
+                            {contact.full_name}
                         </h3>
                         <span className="text-xs text-gray-400">2:30 PM</span>
                     </div>
                     <p className="text-sm text-gray-400 truncate">
-                        {isBot
-                            ? "AI Legal Assistant • Always available"
-                            : getLastSeen(contact)}
+                        {getLastSeen(contact)}
                     </p>
                 </div>
             </div>
@@ -334,11 +274,7 @@ const ChatPage = () => {
             >
                 {!isOwnMessage && (
                     <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden flex-shrink-0">
-                        {conversation?.isBot ? (
-                            <Bot className="w-4 h-4 text-white" />
-                        ) : (
-                            <User className="w-4 h-4 text-gray-400" />
-                        )}
+                        <User className="w-4 h-4 text-gray-400" />
                     </div>
                 )}
                 <div className="flex flex-col">
@@ -346,8 +282,6 @@ const ChatPage = () => {
                         className={`px-4 py-2 rounded-2xl shadow-sm ${
                             isOwnMessage
                                 ? "bg-blue-600 text-white"
-                                : conversation?.isBot
-                                ? "bg-gradient-to-br from-purple-600 to-blue-600 text-white"
                                 : "bg-gray-700 text-white"
                         } ${isOwnMessage ? "rounded-br-md" : "rounded-bl-md"}`}
                     >
@@ -490,10 +424,6 @@ const ChatPage = () => {
                             </div>
 
                             <div className="flex-1 overflow-y-auto">
-                                <div className="border-b border-gray-700">
-                                    <ContactItem contact={{}} isBot={true} />
-                                </div>
-
                                 {filteredContacts.length === 0 ? (
                                     <div className="p-6 text-center text-gray-400">
                                         <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
@@ -537,35 +467,24 @@ const ChatPage = () => {
                                                 </button>
                                                 <div className="relative">
                                                     <div
-                                                        className={`w-10 h-10 rounded-full flex items-center justify-center overflow-hidden ${
-                                                            conversation.isBot
-                                                                ? "bg-gradient-to-br from-blue-500 to-purple-600"
-                                                                : "bg-gray-600"
-                                                        }`}
+                                                        className={`w-10 h-10 rounded-full flex items-center justify-center overflow-hidden bg-gray-600`}
                                                     >
-                                                        {conversation.isBot ? (
-                                                            <Bot className="w-5 h-5 text-white" />
-                                                        ) : (
-                                                            <User className="w-5 h-5 text-gray-400" />
-                                                        )}
+                                                        <User className="w-5 h-5 text-gray-400" />
                                                     </div>
-                                                    {!conversation.isBot &&
-                                                        isOnline(
-                                                            conversation.user_id
-                                                        ) && (
-                                                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></div>
-                                                        )}
+                                                    {isOnline(
+                                                        conversation.user_id
+                                                    ) && (
+                                                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></div>
+                                                    )}
                                                 </div>
                                                 <div>
                                                     <h3 className="font-semibold text-white">
                                                         {conversation.full_name}
                                                     </h3>
                                                     <p className="text-sm text-gray-400">
-                                                        {conversation.isBot
-                                                            ? "AI Assistant • Always available"
-                                                            : getLastSeen(
-                                                                  conversation
-                                                              )}
+                                                        {getLastSeen(
+                                                            conversation
+                                                        )}
                                                     </p>
                                                 </div>
                                             </div>
@@ -576,27 +495,17 @@ const ChatPage = () => {
                                         {messages.length === 0 ? (
                                             <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                                 <div
-                                                    className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 ${
-                                                        conversation.isBot
-                                                            ? "bg-gradient-to-br from-blue-500/20 to-purple-600/20"
-                                                            : "bg-gray-800"
-                                                    }`}
+                                                    className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-gray-800`}
                                                 >
-                                                    {conversation.isBot ? (
-                                                        <Bot className="w-10 h-10 text-blue-400" />
-                                                    ) : (
-                                                        <MessageCircle className="w-10 h-10 text-gray-500" />
-                                                    )}
+                                                    <MessageCircle className="w-10 h-10 text-gray-500" />
                                                 </div>
                                                 <h3 className="text-xl font-medium text-white mb-2">
-                                                    {conversation.isBot
-                                                        ? "Legal Assistant"
-                                                        : `Chat with ${conversation.full_name}`}
+                                                    {`Chat with ${conversation.full_name}`}
                                                 </h3>
                                                 <p className="text-center text-gray-500 max-w-sm">
-                                                    {conversation.isBot
-                                                        ? "Ask me any legal questions. I'm here to help with Indian law queries, case analysis, and legal advice."
-                                                        : "No messages yet. Start the conversation!"}
+                                                    {
+                                                        "No messages yet. Start the conversation!"
+                                                    }
                                                 </p>
                                             </div>
                                         ) : (
@@ -638,33 +547,6 @@ const ChatPage = () => {
                                                     );
                                                 })}
 
-                                                {conversation.isBot &&
-                                                    isBotTyping && (
-                                                        <div className="flex items-center space-x-2 mb-4">
-                                                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                                                                <Bot className="w-4 h-4 text-white" />
-                                                            </div>
-                                                            <div className="bg-gray-700 rounded-2xl rounded-bl-md px-4 py-3">
-                                                                <div className="flex space-x-1">
-                                                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                                                                    <div
-                                                                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                                                                        style={{
-                                                                            animationDelay:
-                                                                                "0.1s",
-                                                                        }}
-                                                                    ></div>
-                                                                    <div
-                                                                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                                                                        style={{
-                                                                            animationDelay:
-                                                                                "0.2s",
-                                                                        }}
-                                                                    ></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
                                                 <div ref={messagesEndRef} />
                                             </>
                                         )}
