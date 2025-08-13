@@ -1,0 +1,6 @@
+<svg width="200" height="40" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="30" font-family="Arial, sans-serif" font-size="28" font-weight="bold">
+    <tspan fill="white">Case</tspan>
+    <tspan fill="#60A5FA">Bridge</tspan>
+  </text>
+</svg>
