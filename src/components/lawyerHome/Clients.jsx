@@ -134,28 +134,6 @@ const Clients = ({ clients, handleClientRequest }) => {
                                     </p>
                                 </div>
                             </div>
-
-                            <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                                <div className="flex items-center space-x-1">
-                                    <button className="text-blue-400 hover:text-blue-300 hover:bg-blue-600/10 p-2 rounded-lg transition-colors">
-                                        <Phone className="w-4 h-4" />
-                                    </button>
-                                    <button className="text-blue-400 hover:text-blue-300 hover:bg-blue-600/10 p-2 rounded-lg transition-colors">
-                                        <Mail className="w-4 h-4" />
-                                    </button>
-                                    <button className="text-blue-400 hover:text-blue-300 hover:bg-blue-600/10 p-2 rounded-lg transition-colors">
-                                        <MessageCircle className="w-4 h-4" />
-                                    </button>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                    <button className="text-gray-400 hover:text-gray-300 hover:bg-gray-600/20 p-2 rounded-lg transition-colors">
-                                        <Eye className="w-4 h-4" />
-                                    </button>
-                                    <button className="text-gray-400 hover:text-gray-300 hover:bg-gray-600/20 p-2 rounded-lg transition-colors">
-                                        <Edit className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     ))
                 )}

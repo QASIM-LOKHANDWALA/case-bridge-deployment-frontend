@@ -3,6 +3,7 @@ import { Search, Filter, Shield } from "lucide-react";
 import LawyerCard from "./LawyerCard";
 import toast from "react-hot-toast";
 import axiosInstance from "../../services/axiosInstance";
+import useAuth from "../../hooks/useAuth";
 
 const isDev = import.meta.env.VITE_DEV;
 
@@ -95,6 +96,8 @@ const DiscoverLawyers = ({
         );
     });
 
+    const { token } = useAuth();
+
     const handleSendRequest = async (lawyerId) => {
         try {
             console.log(lawyerId);
@@ -111,13 +114,16 @@ const DiscoverLawyers = ({
 
             if (isDev) console.log(response.data);
 
+            console.log(response.data);
             if (response.status === 201) {
                 toast.success("Request Sent.");
                 const newRequest = response.data;
                 setRequests((prevRequests) => [...prevRequests, newRequest]);
             }
         } catch (error) {
-            toast.error("Error in sending request : ", error);
+            console.log(error);
+
+            toast.error("Error in sending request : ", error.message);
         }
     };
 

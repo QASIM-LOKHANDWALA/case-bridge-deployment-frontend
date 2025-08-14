@@ -24,7 +24,7 @@ import axiosInstance from "../../services/axiosInstance";
 
 const isDev = import.meta.env.VITE_DEV;
 
-const Cases = ({ cases, onCaseAdded, clients }) => {
+const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -139,7 +139,7 @@ const Cases = ({ cases, onCaseAdded, clients }) => {
             );
 
             if (response.status === 201) {
-                alert("Document uploaded successfully!");
+                fetchCases();
                 toast.success("Document added!");
             }
         } catch (error) {
