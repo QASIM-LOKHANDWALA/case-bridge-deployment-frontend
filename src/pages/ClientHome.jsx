@@ -148,9 +148,9 @@ const ClientHome = () => {
         return (
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl md:text-2xl font-semibold text-white">
+                    <h3s className="text-lg font-semibold text-white">
                         My Lawyers
-                    </h2>
+                    </h3s>
                 </div>
                 <div className="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                     {requests

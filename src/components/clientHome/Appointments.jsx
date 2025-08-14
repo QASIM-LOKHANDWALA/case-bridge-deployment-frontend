@@ -170,9 +170,6 @@ const Appointments = () => {
                     <h3 className="text-lg font-semibold text-white">
                         My Appointments
                     </h3>
-                    <p className="text-sm text-gray-400 mt-1">
-                        View your scheduled appointments with your lawyer
-                    </p>
                 </div>
                 <div className="bg-blue-600/20 text-blue-400 px-3 py-2 rounded-lg text-sm flex items-center space-x-2">
                     <CalendarDays className="w-4 h-4" />

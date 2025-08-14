@@ -36,24 +36,17 @@ const Clients = ({ clients, handleClientRequest }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-white">My Clients</h3>
-                <div className="flex items-center space-x-3">
-                    <div className="relative">
-                        <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                        <input
-                            type="text"
-                            placeholder="Search clients..."
-                            className="bg-gray-700 text-white pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        />
-                    </div>
-                </div>
             </div>
 
             <div className="grid gap-4">
                 {clients.length === 0 ? (
-                    <div className="text-center py-12 text-gray-500">
-                        <Users className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                        <p className="text-lg">No Clients found</p>
-                        <p className="text-sm">Your clients will appear here</p>
+                    <div className="text-center py-12">
+                        <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
+                            <User className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                            <h4 className="text-lg font-semibold text-white mb-2">
+                                No clients found.
+                            </h4>
+                        </div>
                     </div>
                 ) : (
                     clients.map((client) => (

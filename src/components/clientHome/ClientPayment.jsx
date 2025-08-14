@@ -299,13 +299,10 @@ const ClientPayment = ({ token }) => {
 
     return (
         <div className="space-y-6">
-            <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-white mb-2">
-                    Payment Requests
-                </h1>
-                <p className="text-gray-400">
-                    Manage your legal service payments
-                </p>
+            <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-white">
+                    Payment Management
+                </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

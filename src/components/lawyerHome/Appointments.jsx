@@ -337,12 +337,23 @@ const Appointments = ({ clients }) => {
 
             <div className="grid gap-4">
                 {filteredAppointments.length === 0 ? (
-                    <div className="text-center py-12 text-gray-500">
-                        <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                        <p className="text-lg">No appointments found</p>
-                        <p className="text-sm">
-                            Schedule your first appointment to get started
-                        </p>
+                    <div className="text-center py-12">
+                        <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
+                            <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                            <h4 className="text-lg font-semibold text-white mb-2">
+                                No cases created
+                            </h4>
+
+                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                                    <User className="w-5 h-5" />
+                                    <span className="text-sm">
+                                        Scheduled appointments with clients will
+                                        show here
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     filteredAppointments.map((appointment) => (

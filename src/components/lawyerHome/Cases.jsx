@@ -16,6 +16,7 @@ import {
     Upload,
     Paperclip,
     Briefcase,
+    Users,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -310,12 +311,22 @@ const Cases = ({ cases, onCaseAdded, clients }) => {
 
             <div className="grid gap-4">
                 {cases.length === 0 ? (
-                    <div className="text-center py-12 text-gray-500">
-                        <Briefcase className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                        <p className="text-lg">No Cases found</p>
-                        <p className="text-sm">
-                            Add a clients case to get started
-                        </p>
+                    <div className="text-center py-12">
+                        <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
+                            <Briefcase className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                            <h4 className="text-lg font-semibold text-white mb-2">
+                                No cases created
+                            </h4>
+
+                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                                    <Users className="w-5 h-5" />
+                                    <span className="text-sm">
+                                        Connect with clients to get started
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     cases.map((case_) => (
