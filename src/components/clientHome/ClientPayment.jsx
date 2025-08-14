@@ -59,7 +59,7 @@ const ClientPayment = ({ token }) => {
 
     const fetchPaymentStats = async () => {
         try {
-            const response = await axios.get(
+            const response = await axiosInstance.get(
                 "/api/transactions/clients/payment-requests/stats/",
                 {
                     headers: {
@@ -107,8 +107,8 @@ const ClientPayment = ({ token }) => {
         try {
             if (!request.razorpay_order_id) {
                 try {
-                    const response = await axios.post(
-                        `http://localhost:8000/api/transactions/clients/payments/${request.id}/pay/`,
+                    const response = await axiosInstance.post(
+                        `/api/transactions/clients/payments/${request.id}/pay/`,
                         {},
                         {
                             headers: {
@@ -158,8 +158,8 @@ const ClientPayment = ({ token }) => {
                 order_id: request.razorpay_order_id,
                 handler: async function (response) {
                     try {
-                        await axios.post(
-                            `http://localhost:8000/api/transactions/verify-payment/`,
+                        await axiosInstance.post(
+                            `/api/transactions/verify-payment/`,
                             {
                                 transaction_id: request.id,
                                 razorpay_order_id: response.razorpay_order_id,

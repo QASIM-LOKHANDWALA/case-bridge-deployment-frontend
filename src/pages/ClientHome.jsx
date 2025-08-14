@@ -23,6 +23,7 @@ import DiscoverLawyers from "../components/clientHome/DiscoverLawyers";
 import Appointments from "../components/clientHome/Appointments";
 import ClientPayment from "../components/clientHome/ClientPayment";
 import axiosInstance from "../services/axiosInstance";
+import Cases from "../components/clientHome/Cases";
 
 const isDev = import.meta.env.VITE_DEV;
 
@@ -32,6 +33,7 @@ const ClientHome = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [lawyers, setLawyers] = useState([]);
     const [requests, setRequests] = useState([]);
+    const [cases, setCases] = useState([]);
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -72,6 +74,24 @@ const ClientHome = () => {
         }
     };
 
+    const fetchCases = async () => {
+        try {
+            const response = await axiosInstance.get(
+                `/api/lawyers/cases/client`,
+                {
+                    headers: {
+                        Authorization: `Token ${token}`,
+                    },
+                }
+            );
+            if (isDev) console.log(response.data);
+            setCases(response.data.cases);
+        } catch (err) {
+            console.log(`Error fetching cases: ${err.message}`);
+            toast.error(err.message);
+        }
+    };
+
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
@@ -90,6 +110,7 @@ const ClientHome = () => {
 
     useEffect(() => {
         fetchLawyers();
+        fetchCases();
         fetchRequest();
     }, []);
 
@@ -157,38 +178,45 @@ const ClientHome = () => {
                 {requests.filter((req) => req.status === "accepted").length ===
                     0 && (
                     <div className="text-center py-12">
-                        <Users className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-lg md:text-xl font-semibold mb-2 text-white">
-                            No hired lawyers yet
-                        </h3>
-                        <p className="text-gray-400 text-sm md:text-base px-4">
-                            Start by finding and hiring lawyers from the home
-                            tab.
-                        </p>
+                        <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
+                            <Users className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                            <h4 className="text-lg font-semibold text-white mb-2">
+                                No hired lawyers yet
+                            </h4>
+
+                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                                    <Search className="w-5 h-5" />
+                                    <span className="text-sm">
+                                        Discover lawyers to hire.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
         );
     };
 
-    const renderCases = () => (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl md:text-2xl font-semibold text-white">
-                    My Cases
-                </h2>
-            </div>
-            <div className="text-center py-12">
-                <FileText className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg md:text-xl font-semibold mb-2 text-white">
-                    No cases yet
-                </h3>
-                <p className="text-gray-400 text-sm md:text-base px-4">
-                    Your active cases will be displayed here.
-                </p>
-            </div>
-        </div>
-    );
+    // const renderCases = () => (
+    //     <div className="space-y-6">
+    //         <div className="flex items-center justify-between">
+    //             <h2 className="text-xl md:text-2xl font-semibold text-white">
+    //                 My Cases
+    //             </h2>
+    //         </div>
+    //         <div className="text-center py-12">
+    //             <FileText className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
+    //             <h3 className="text-lg md:text-xl font-semibold mb-2 text-white">
+    //                 No cases yet
+    //             </h3>
+    //             <p className="text-gray-400 text-sm md:text-base px-4">
+    //                 Your active cases will be displayed here.
+    //             </p>
+    //         </div>
+    //     </div>
+    // );
 
     const renderContent = () => {
         switch (activeTab) {
@@ -209,7 +237,7 @@ const ClientHome = () => {
             case "payments":
                 return <ClientPayment token={token} />;
             case "cases":
-                return renderCases();
+                return <Cases cases={cases} />;
             default:
                 return (
                     <DiscoverLawyers
