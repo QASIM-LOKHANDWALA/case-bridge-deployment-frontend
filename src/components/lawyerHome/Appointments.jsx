@@ -18,6 +18,7 @@ import {
     Video,
     UserCheck,
     CalendarDays,
+    RefreshCw,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -32,6 +33,7 @@ const Appointments = ({ clients }) => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
+    const [statusUpdateLoading, setStatusUpdateLoading] = useState({});
     const [dateFilter, setDateFilter] = useState("all");
     const [formData, setFormData] = useState({
         user_id: "",
@@ -116,6 +118,11 @@ const Appointments = ({ clients }) => {
     };
 
     const handleStatusUpdate = async (appointmentId, newStatus) => {
+        setStatusUpdateLoading((prev) => ({
+            ...prev,
+            [appointmentId]: newStatus,
+        }));
+
         try {
             const response = await axiosInstance.patch(
                 `/api/appointments/${appointmentId}/status/`,
@@ -129,12 +136,38 @@ const Appointments = ({ clients }) => {
             );
 
             if (response.status === 200) {
+                setAppointments((prev) =>
+                    prev.map((appointment) =>
+                        appointment.id === appointmentId
+                            ? { ...appointment, status: newStatus }
+                            : appointment
+                    )
+                );
+
                 fetchAppointments();
-                toast.success("Appointment status updated!");
+                toast.success(
+                    `Appointment marked as ${newStatus.replace("_", " ")}`
+                );
             }
         } catch (error) {
             if (isDev) console.error("Error updating status:", error);
-            toast.error("Failed to update appointment status");
+
+            const errorMessage =
+                error.response?.data?.error ||
+                "Failed to update appointment status";
+            toast.error(errorMessage);
+
+            if (error.response?.status === 403) {
+                console.error("Unauthorized to update this appointment");
+            } else if (error.response?.status === 400) {
+                console.error("Invalid status value provided");
+            }
+        } finally {
+            setStatusUpdateLoading((prev) => {
+                const newState = { ...prev };
+                delete newState[appointmentId];
+                return newState;
+            });
         }
     };
 
@@ -197,7 +230,7 @@ const Appointments = ({ clients }) => {
                 return <CheckCircle className="w-4 h-4 text-green-400" />;
             case "cancelled":
                 return <XCircle className="w-4 h-4 text-red-400" />;
-            case "pending":
+            case "scheduled":
                 return <Clock className="w-4 h-4 text-yellow-400" />;
             case "no_show":
                 return <AlertCircle className="w-4 h-4 text-orange-400" />;
@@ -212,7 +245,7 @@ const Appointments = ({ clients }) => {
                 return "bg-green-600/20 text-green-400";
             case "cancelled":
                 return "bg-red-600/20 text-red-400";
-            case "pending":
+            case "scheduled":
                 return "bg-yellow-600/20 text-yellow-400";
             case "no_show":
                 return "bg-orange-600/20 text-orange-400";
@@ -288,8 +321,35 @@ const Appointments = ({ clients }) => {
         return matchesSearch && matchesStatus && matchesDate;
     });
 
+    const StatusButton = ({
+        appointmentId,
+        currentStatus,
+        targetStatus,
+        label,
+        bgColor,
+        hoverColor,
+        icon: Icon,
+    }) => {
+        const isLoading = statusUpdateLoading[appointmentId] === targetStatus;
+
+        return (
+            <button
+                onClick={() => handleStatusUpdate(appointmentId, targetStatus)}
+                disabled={isLoading || currentStatus === targetStatus}
+                className={`${bgColor} ${hoverColor} text-white px-3 py-1 rounded text-xs transition-colors flex items-center space-x-1 disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+                {isLoading ? (
+                    <RefreshCw className="w-3 h-3 animate-spin" />
+                ) : (
+                    Icon && <Icon className="w-3 h-3" />
+                )}
+                <span>{label}</span>
+            </button>
+        );
+    };
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 bg-gray-900 min-h-screen p-6">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-white">
                     Appointments
@@ -321,10 +381,9 @@ const Appointments = ({ clients }) => {
                     className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="all">All Status</option>
-                    <option value="pending">Pending</option>
+                    <option value="scheduled">Scheduled</option>
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
-                    <option value="no_show">No Show</option>
                 </select>
 
                 <select
@@ -345,7 +404,7 @@ const Appointments = ({ clients }) => {
                         <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
                             <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-600" />
                             <h4 className="text-lg font-semibold text-white mb-2">
-                                No cases created
+                                No appointments found
                             </h4>
 
                             <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
@@ -370,7 +429,8 @@ const Appointments = ({ clients }) => {
                                     <div className="flex-1">
                                         <div className="flex items-center space-x-3 mb-2">
                                             <h4 className="font-semibold text-white">
-                                                {appointment.user.full_name}
+                                                {appointment.user?.full_name ||
+                                                    "Unknown Client"}
                                             </h4>
                                             <div
                                                 className={`px-2 py-1 rounded-full text-xs flex items-center space-x-1 ${getStatusColor(
@@ -381,10 +441,16 @@ const Appointments = ({ clients }) => {
                                                     appointment.status
                                                 )}
                                                 <span className="capitalize">
-                                                    {appointment.status}
+                                                    {appointment.status.replace(
+                                                        "_",
+                                                        " "
+                                                    )}
                                                 </span>
                                             </div>
                                         </div>
+                                        <p className="text-gray-400 text-sm">
+                                            {appointment.title}
+                                        </p>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <button
@@ -425,9 +491,10 @@ const Appointments = ({ clients }) => {
                                             Contact
                                         </p>
                                         <div className="flex items-center space-x-2">
-                                            <Mail className="w-4 h-4 text-gray-400" />
+                                            <Phone className="w-4 h-4 text-gray-400" />
                                             <p className="text-sm text-gray-300">
-                                                {appointment.user.phone_number}
+                                                {appointment.user
+                                                    ?.phone_number || "—"}
                                             </p>
                                         </div>
                                     </div>
@@ -441,43 +508,73 @@ const Appointments = ({ clients }) => {
                                     </div>
                                 </div>
 
-                                {appointment.status === "scheduled" && (
-                                    <div className="flex space-x-2">
-                                        <button
-                                            onClick={() =>
-                                                handleStatusUpdate(
-                                                    appointment.id,
-                                                    "completed"
-                                                )
-                                            }
-                                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition-colors"
-                                        >
-                                            Mark Completed
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handleStatusUpdate(
-                                                    appointment.id,
-                                                    "cancelled"
-                                                )
-                                            }
-                                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handleStatusUpdate(
-                                                    appointment.id,
-                                                    "no_show"
-                                                )
-                                            }
-                                            className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-xs transition-colors"
-                                        >
-                                            No Show
-                                        </button>
-                                    </div>
-                                )}
+                                <div className="flex flex-wrap gap-2">
+                                    {appointment.status === "scheduled" && (
+                                        <>
+                                            <StatusButton
+                                                appointmentId={appointment.id}
+                                                currentStatus={
+                                                    appointment.status
+                                                }
+                                                targetStatus="completed"
+                                                label="Mark Completed"
+                                                bgColor="bg-green-600"
+                                                hoverColor="hover:bg-green-700"
+                                                icon={CheckCircle}
+                                            />
+                                            <StatusButton
+                                                appointmentId={appointment.id}
+                                                currentStatus={
+                                                    appointment.status
+                                                }
+                                                targetStatus="cancelled"
+                                                label="Cancel"
+                                                bgColor="bg-red-600"
+                                                hoverColor="hover:bg-red-700"
+                                                icon={XCircle}
+                                            />
+                                        </>
+                                    )}
+
+                                    {appointment.status === "pending" && (
+                                        <>
+                                            <StatusButton
+                                                appointmentId={appointment.id}
+                                                currentStatus={
+                                                    appointment.status
+                                                }
+                                                targetStatus="scheduled"
+                                                label="Confirm"
+                                                bgColor="bg-blue-600"
+                                                hoverColor="hover:bg-blue-700"
+                                                icon={Clock}
+                                            />
+                                            <StatusButton
+                                                appointmentId={appointment.id}
+                                                currentStatus={
+                                                    appointment.status
+                                                }
+                                                targetStatus="cancelled"
+                                                label="Cancel"
+                                                bgColor="bg-red-600"
+                                                hoverColor="hover:bg-red-700"
+                                                icon={XCircle}
+                                            />
+                                        </>
+                                    )}
+
+                                    {appointment.status === "cancelled" && (
+                                        <StatusButton
+                                            appointmentId={appointment.id}
+                                            currentStatus={appointment.status}
+                                            targetStatus="scheduled"
+                                            label="Reschedule"
+                                            bgColor="bg-blue-600"
+                                            hoverColor="hover:bg-blue-700"
+                                            icon={Calendar}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                     ))
@@ -517,7 +614,7 @@ const Appointments = ({ clients }) => {
                                     </label>
                                     <select
                                         name="user_id"
-                                        value={formData.user}
+                                        value={formData.user_id}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -587,7 +684,6 @@ const Appointments = ({ clients }) => {
                                         <option value="cancelled">
                                             Cancelled
                                         </option>
-                                        <option value="no_show">No Show</option>
                                     </select>
                                 </div>
                             </div>

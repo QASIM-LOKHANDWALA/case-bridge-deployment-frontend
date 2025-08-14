@@ -63,10 +63,8 @@ const Appointments = () => {
                 return <CheckCircle className="w-4 h-4 text-green-400" />;
             case "cancelled":
                 return <XCircle className="w-4 h-4 text-red-400" />;
-            case "pending":
+            case "scheduled":
                 return <Clock className="w-4 h-4 text-yellow-400" />;
-            case "no_show":
-                return <AlertCircle className="w-4 h-4 text-orange-400" />;
             default:
                 return <Clock className="w-4 h-4 text-blue-400" />;
         }
@@ -78,10 +76,8 @@ const Appointments = () => {
                 return "bg-green-600/20 text-green-400";
             case "cancelled":
                 return "bg-red-600/20 text-red-400";
-            case "pending":
+            case "scheduled":
                 return "bg-yellow-600/20 text-yellow-400";
-            case "no_show":
-                return "bg-orange-600/20 text-orange-400";
             default:
                 return "bg-blue-600/20 text-blue-400";
         }
@@ -195,10 +191,9 @@ const Appointments = () => {
                     className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="all">All Status</option>
-                    <option value="pending">Pending</option>
+                    <option value="scheduled">Scheduled</option>
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
-                    <option value="no_show">No Show</option>
                 </select>
 
                 <select
