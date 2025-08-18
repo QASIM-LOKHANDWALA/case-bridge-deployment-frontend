@@ -91,7 +91,7 @@ const AuthPage = () => {
         setMessage("");
     };
 
-    const { login, signup, loading, error, isAuthenticated, user } = useAuth();
+    const { login, signup, loading, isAuthenticated, user } = useAuth();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -134,7 +134,7 @@ const AuthPage = () => {
             }
             navigate("/home");
         } catch (err) {
-            toast.error(`Authentication failed. ${err}`);
+            toast.error(`Authentication failed. ${err.message}`);
         }
     };
 
