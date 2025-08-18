@@ -11,7 +11,7 @@ const DiscoverLawyers = ({
     lawyers,
     requests,
     setRequests,
-    specialization,
+    specializations,
     getSpecializationLabel,
 }) => {
     const indianCities = [

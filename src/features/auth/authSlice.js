@@ -142,14 +142,11 @@ const fetchUserProfile = createAsyncThunk(
             //         },
             //     }
             // );
-            const response = await axiosInstance.get(
-                "http://localhost:8000/user/profile/",
-                {
-                    headers: {
-                        Authorization: `Token ${token}`,
-                    },
-                }
-            );
+            const response = await axiosInstance.get("/user/profile/", {
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            });
             if (response.status === 200) {
                 return response.data.user;
             }

@@ -188,7 +188,7 @@ const Appointments = ({ clients }) => {
                 }
             );
 
-            if (response.status === 200) {
+            if (response.status === 204) {
                 fetchAppointments();
                 toast.success("Appointment deleted successfully!");
             }

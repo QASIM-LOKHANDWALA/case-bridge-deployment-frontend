@@ -107,10 +107,27 @@ const AuthPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.email || !formData.password) {
+            toast.error("Email and password are required");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            toast.error("Please enter a valid email address");
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            toast.error("Password must be at least 6 characters");
+            return;
+        }
+
         try {
             if (isSignup) {
                 const data = await signup(formData);
-                toast.success(`Welcome To CaseBridge!`);
+                toast.success("Welcome To CaseBridge!");
             } else {
                 const data = await login(formData);
                 toast.success(`Logged in as ${data.user.email}`);
@@ -644,7 +661,7 @@ const AuthPage = () => {
                                                             onChange={
                                                                 handleChange
                                                             }
-                                                            className={`${inputClasses} pl-10 appearance-none`}
+                                                            className="w-full pl-12 pr-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all duration-200"
                                                             required
                                                         >
                                                             <option value="">

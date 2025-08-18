@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     User,
     Shield,
@@ -96,11 +96,14 @@ const Profile = () => {
                 toast.error(error);
                 return;
             }
-            toast.success("Profile refreshed successfully");
         } catch (error) {
             toast.error("Failed to refresh profile data");
         }
     };
+
+    useEffect(() => {
+        handleProfileUpdate();
+    }, []);
 
     return (
         <div className="space-y-6">
