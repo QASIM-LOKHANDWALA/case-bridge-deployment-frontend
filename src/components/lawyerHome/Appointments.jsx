@@ -349,7 +349,7 @@ const Appointments = ({ clients }) => {
     };
 
     return (
-        <div className="space-y-6 bg-gray-900 min-h-screen p-6">
+        <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-white">
                     Appointments

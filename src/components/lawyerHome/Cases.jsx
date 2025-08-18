@@ -17,6 +17,9 @@ import {
     Paperclip,
     Briefcase,
     Users,
+    Search,
+    Edit3,
+    Save,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -26,8 +29,14 @@ const isDev = import.meta.env.VITE_DEV;
 
 const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingCase, setEditingCase] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
     const [error, setError] = useState(null);
+    const [editError, setEditError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
     const [expandedCases, setExpandedCases] = useState(new Set());
     const [uploadingFiles, setUploadingFiles] = useState(new Set());
     const [formData, setFormData] = useState({
@@ -38,6 +47,11 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
         next_hearing: "",
         status: "active",
         priority: "medium",
+    });
+    const [editFormData, setEditFormData] = useState({
+        status: "",
+        next_hearing: "",
+        priority: "",
     });
     const { token } = useAuth();
 
@@ -55,11 +69,88 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
+    };
+
+    const handleEditInputChange = (e) => {
+        const { name, value } = e.target;
+        setEditFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleEditCase = (case_) => {
+        setEditingCase(case_);
+        setEditFormData({
+            status: case_.status,
+            next_hearing: case_.next_hearing,
+            priority: case_.priority,
+        });
+        setIsEditModalOpen(true);
+        setEditError(null);
+    };
+
+    const handleUpdateCase = async () => {
+        if (!editingCase) return;
+
+        setIsUpdating(true);
+        setEditError(null);
+
+        // Check if any field has changed
+        const hasChanges =
+            editFormData.status !== editingCase.status ||
+            editFormData.next_hearing !== editingCase.next_hearing ||
+            editFormData.priority !== editingCase.priority;
+
+        if (!hasChanges) {
+            setEditError("No changes detected");
+            setIsUpdating(false);
+            return;
+        }
+
+        try {
+            const response = await axiosInstance.patch(
+                `/api/lawyers/update-case/${editingCase.id}/`,
+                editFormData,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Token ${token}`,
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                setIsEditModalOpen(false);
+                setEditingCase(null);
+                fetchCases(); // Refresh cases list
+                toast.success("Case updated successfully!");
+            } else {
+                setEditError(response.data.error || "Failed to update case");
+            }
+        } catch (err) {
+            const errorMessage =
+                err.response?.data?.error || "Network error. Please try again.";
+            setEditError(errorMessage);
+            if (isDev) console.error("Error updating case:", err);
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    const closeEditModal = () => {
+        setIsEditModalOpen(false);
+        setEditingCase(null);
+        setEditError(null);
+        setEditFormData({
+            status: "",
+            next_hearing: "",
+            priority: "",
+        });
     };
 
     const handleSubmit = async () => {
@@ -294,6 +385,15 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
         );
     };
 
+    const filteredCases = cases.filter((c) => {
+        const matchesSearch = c.client
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+        const matchesStatus =
+            statusFilter === "all" || c.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -309,8 +409,32 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                 </div>
             </div>
 
+            <div className="flex flex-wrap gap-4 items-center">
+                <div className="relative flex-1 min-w-64">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                        type="text"
+                        placeholder="Search by client name..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="closed">Closed</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
+
             <div className="grid gap-4">
-                {cases.length === 0 ? (
+                {filteredCases.length === 0 ? (
                     <div className="text-center py-12">
                         <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
                             <Briefcase className="w-16 h-16 mx-auto mb-4 text-gray-600" />
@@ -329,7 +453,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                         </div>
                     </div>
                 ) : (
-                    cases.map((case_) => (
+                    filteredCases.map((case_) => (
                         <div
                             key={case_.id}
                             className="bg-gray-800 rounded-xl border border-gray-700 hover:border-gray-600 transition-colors"
@@ -345,6 +469,15 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                         </p>
                                     </div>
                                     <div className="flex items-center space-x-2">
+                                        <button
+                                            onClick={() =>
+                                                handleEditCase(case_)
+                                            }
+                                            className="p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors"
+                                            title="Edit case"
+                                        >
+                                            <Edit3 className="w-4 h-4" />
+                                        </button>
                                         <div
                                             className={`px-3 py-1 rounded-full text-xs ${
                                                 case_.status === "active"
@@ -354,12 +487,14 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                                     : "bg-gray-600/20 text-gray-400"
                                             }`}
                                         >
-                                            {case_.status}
+                                            {case_.status.replace("_", " ")}
                                         </div>
                                         <div
                                             className={`px-2 py-1 rounded-full text-xs ${
                                                 case_.priority === "urgent"
                                                     ? "bg-red-600/20 text-red-400"
+                                                    : case_.priority === "high"
+                                                    ? "bg-orange-600/20 text-orange-400"
                                                     : case_.priority ===
                                                       "medium"
                                                     ? "bg-yellow-600/20 text-yellow-400"
@@ -678,6 +813,111 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                         <>
                                             <Plus className="w-4 h-4" />
                                             <span>Create Case</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Case Modal */}
+            {isEditModalOpen && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-lg">
+                        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+                            <h2 className="text-xl font-semibold text-white">
+                                Edit Case
+                            </h2>
+                            <button
+                                onClick={closeEditModal}
+                                className="text-gray-400 hover:text-white transition-colors"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-4">
+                            {editError && (
+                                <div className="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-center space-x-2">
+                                    <AlertCircle className="w-5 h-5 text-red-400" />
+                                    <span className="text-red-400 text-sm">
+                                        {editError}
+                                    </span>
+                                </div>
+                            )}
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        Status
+                                    </label>
+                                    <select
+                                        name="status"
+                                        value={editFormData.status}
+                                        onChange={handleEditInputChange}
+                                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                    >
+                                        <option value="active">Active</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="closed">Closed</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        Next Hearing
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="next_hearing"
+                                        value={editFormData.next_hearing}
+                                        onChange={handleEditInputChange}
+                                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        Priority
+                                    </label>
+                                    <select
+                                        name="priority"
+                                        value={editFormData.priority}
+                                        onChange={handleEditInputChange}
+                                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                    >
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end space-x-3 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={closeEditModal}
+                                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleUpdateCase}
+                                    disabled={isUpdating}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center space-x-2"
+                                >
+                                    {isUpdating ? (
+                                        <>
+                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                            <span>Updating...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Save className="w-4 h-4" />
+                                            <span>Update Case</span>
                                         </>
                                     )}
                                 </button>
