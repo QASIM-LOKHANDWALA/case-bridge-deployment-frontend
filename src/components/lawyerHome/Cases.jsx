@@ -20,6 +20,7 @@ import {
     Search,
     Edit3,
     Save,
+    Filter,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -39,6 +40,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
     const [statusFilter, setStatusFilter] = useState("all");
     const [expandedCases, setExpandedCases] = useState(new Set());
     const [uploadingFiles, setUploadingFiles] = useState(new Set());
+    const [showFilters, setShowFilters] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         client_id: "",
@@ -100,7 +102,6 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
         setIsUpdating(true);
         setEditError(null);
 
-        // Check if any field has changed
         const hasChanges =
             editFormData.status !== editingCase.status ||
             editFormData.next_hearing !== editingCase.next_hearing ||
@@ -127,7 +128,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
             if (response.status === 200) {
                 setIsEditModalOpen(false);
                 setEditingCase(null);
-                fetchCases(); // Refresh cases list
+                fetchCases();
                 toast.success("Case updated successfully!");
             } else {
                 setEditError(response.data.error || "Failed to update case");
@@ -322,7 +323,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                 {visibleDocuments.map((doc) => (
                     <div
                         key={doc.id}
-                        className="flex items-center justify-between p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                        className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors gap-3 sm:gap-0"
                     >
                         <div className="flex items-center space-x-3 flex-1 min-w-0">
                             {getFileIcon(doc.document)}
@@ -335,17 +336,16 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center justify-end space-x-2">
                             <button
                                 onClick={() =>
                                     window.open(doc.document, "_blank")
                                 }
-                                className="p-1 text-gray-400 hover:text-blue-400 transition-colors"
+                                className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
                                 title="View document"
                             >
                                 <Eye className="w-4 h-4" />
                             </button>
-
                             <button
                                 onClick={() =>
                                     handleDocumentDownload(
@@ -353,7 +353,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                         doc.title
                                     )
                                 }
-                                className="p-1 text-gray-400 hover:text-green-400 transition-colors"
+                                className="p-2 text-gray-400 hover:text-green-400 transition-colors"
                                 title="Download document"
                             >
                                 <Download className="w-4 h-4" />
@@ -395,57 +395,79 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
     });
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
+        <div className="space-y-4 sm:space-y-6 p-4 sm:p-0">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h3 className="text-lg font-semibold text-white">My Cases</h3>
-                <div className="flex items-center space-x-3">
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2"
-                    >
-                        <Plus className="w-4 h-4" />
-                        <span>Add Case</span>
-                    </button>
-                </div>
-            </div>
-
-            <div className="flex flex-wrap gap-4 items-center">
-                <div className="relative flex-1 min-w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                        type="text"
-                        placeholder="Search by client name..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
-
-                <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto"
                 >
-                    <option value="all">All Status</option>
-                    <option value="active">Active</option>
-                    <option value="closed">Closed</option>
-                    <option value="pending">Pending</option>
-                </select>
+                    <Plus className="w-4 h-4" />
+                    <span>Add Case</span>
+                </button>
             </div>
 
-            <div className="grid gap-4">
+            <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                            type="text"
+                            placeholder="Search by client name..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <button
+                        onClick={() => setShowFilters(!showFilters)}
+                        className="sm:hidden flex items-center justify-center px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                    >
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                    </button>
+
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="hidden sm:block px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="closed">Closed</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+
+                {showFilters && (
+                    <div className="sm:hidden">
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                )}
+            </div>
+
+            <div className="space-y-4">
                 {filteredCases.length === 0 ? (
-                    <div className="text-center py-12">
-                        <div className="bg-gray-800 rounded-xl border border-gray-700 p-8">
-                            <Briefcase className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                    <div className="text-center py-8 sm:py-12">
+                        <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 sm:p-8">
+                            <Briefcase className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 text-gray-600" />
                             <h4 className="text-lg font-semibold text-white mb-2">
                                 No cases created
                             </h4>
-
                             <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
                                 <div className="flex items-center justify-center space-x-2 text-blue-400">
                                     <Users className="w-5 h-5" />
-                                    <span className="text-sm">
+                                    <span className="text-sm text-center">
                                         Connect with clients to get started
                                     </span>
                                 </div>
@@ -458,17 +480,17 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                             key={case_.id}
                             className="bg-gray-800 rounded-xl border border-gray-700 hover:border-gray-600 transition-colors"
                         >
-                            <div className="p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex-1">
-                                        <h4 className="font-semibold text-white mb-1">
+                            <div className="p-4 sm:p-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+                                    <div className="flex-1 min-w-0">
+                                        <h4 className="font-semibold text-white mb-1 truncate">
                                             {case_.title}
                                         </h4>
                                         <p className="text-sm text-gray-400">
                                             Case No: {case_.case_number}
                                         </p>
                                     </div>
-                                    <div className="flex items-center space-x-2">
+                                    <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0">
                                         <button
                                             onClick={() =>
                                                 handleEditCase(case_)
@@ -478,40 +500,44 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                         >
                                             <Edit3 className="w-4 h-4" />
                                         </button>
-                                        <div
-                                            className={`px-3 py-1 rounded-full text-xs ${
-                                                case_.status === "active"
-                                                    ? "bg-green-600/20 text-green-400"
-                                                    : case_.status === "pending"
-                                                    ? "bg-yellow-600/20 text-yellow-400"
-                                                    : "bg-gray-600/20 text-gray-400"
-                                            }`}
-                                        >
-                                            {case_.status.replace("_", " ")}
-                                        </div>
-                                        <div
-                                            className={`px-2 py-1 rounded-full text-xs ${
-                                                case_.priority === "urgent"
-                                                    ? "bg-red-600/20 text-red-400"
-                                                    : case_.priority === "high"
-                                                    ? "bg-orange-600/20 text-orange-400"
-                                                    : case_.priority ===
-                                                      "medium"
-                                                    ? "bg-yellow-600/20 text-yellow-400"
-                                                    : "bg-green-600/20 text-green-400"
-                                            }`}
-                                        >
-                                            {case_.priority}
+                                        <div className="flex items-center space-x-2">
+                                            <div
+                                                className={`px-2 sm:px-3 py-1 rounded-full text-xs ${
+                                                    case_.status === "active"
+                                                        ? "bg-green-600/20 text-green-400"
+                                                        : case_.status ===
+                                                          "pending"
+                                                        ? "bg-yellow-600/20 text-yellow-400"
+                                                        : "bg-gray-600/20 text-gray-400"
+                                                }`}
+                                            >
+                                                {case_.status.replace("_", " ")}
+                                            </div>
+                                            <div
+                                                className={`px-2 py-1 rounded-full text-xs ${
+                                                    case_.priority === "urgent"
+                                                        ? "bg-red-600/20 text-red-400"
+                                                        : case_.priority ===
+                                                          "high"
+                                                        ? "bg-orange-600/20 text-orange-400"
+                                                        : case_.priority ===
+                                                          "medium"
+                                                        ? "bg-yellow-600/20 text-yellow-400"
+                                                        : "bg-green-600/20 text-green-400"
+                                                }`}
+                                            >
+                                                {case_.priority}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
                                     <div>
                                         <p className="text-xs text-gray-400 mb-1">
                                             Client
                                         </p>
-                                        <p className="text-sm text-gray-300">
+                                        <p className="text-sm text-gray-300 truncate">
                                             {case_.client}
                                         </p>
                                     </div>
@@ -519,7 +545,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                         <p className="text-xs text-gray-400 mb-1">
                                             Court
                                         </p>
-                                        <p className="text-sm text-gray-300">
+                                        <p className="text-sm text-gray-300 truncate">
                                             {case_.court}
                                         </p>
                                     </div>
@@ -571,7 +597,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
 
                                     {expandedCases.has(case_.id) && (
                                         <div className="bg-gray-900 rounded-lg p-4">
-                                            <div className="flex items-center justify-between mb-3">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-3">
                                                 <h5 className="text-sm font-medium text-white">
                                                     Case Documents
                                                 </h5>
@@ -597,7 +623,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                                     />
                                                     <label
                                                         htmlFor={`file-upload-${case_.id}`}
-                                                        className={`text-blue-400 hover:text-blue-300 text-sm flex items-center space-x-1 cursor-pointer ${
+                                                        className={`text-blue-400 hover:text-blue-300 text-sm flex items-center justify-center sm:justify-start space-x-1 cursor-pointer ${
                                                             uploadingFiles.has(
                                                                 case_.id
                                                             )
@@ -641,8 +667,8 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-                            <h2 className="text-xl font-semibold text-white">
+                        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-700">
+                            <h2 className="text-lg sm:text-xl font-semibold text-white">
                                 Add New Case
                             </h2>
                             <button
@@ -653,17 +679,17 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                             </button>
                         </div>
 
-                        <div className="p-6 space-y-4">
+                        <div className="p-4 sm:p-6 space-y-4">
                             {error && (
-                                <div className="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-center space-x-2">
-                                    <AlertCircle className="w-5 h-5 text-red-400" />
+                                <div className="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-start space-x-2">
+                                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                                     <span className="text-red-400 text-sm">
                                         {error}
                                     </span>
                                 </div>
                             )}
 
-                            <div className="grid md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-300 mb-2">
                                         <FileText className="w-4 h-4 inline mr-1" />
@@ -707,7 +733,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                 </div>
                             </div>
 
-                            <div className="grid md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-300 mb-2">
                                         <Building className="w-4 h-4 inline mr-1" />
@@ -756,7 +782,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                 />
                             </div>
 
-                            <div className="grid md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-300 mb-2">
                                         Status
@@ -790,11 +816,11 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                 </div>
                             </div>
 
-                            <div className="flex justify-end space-x-3 pt-4">
+                            <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
                                 <button
                                     type="button"
                                     onClick={closeModal}
-                                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors order-2 sm:order-1"
                                 >
                                     Cancel
                                 </button>
@@ -802,7 +828,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                     type="button"
                                     onClick={handleSubmit}
                                     disabled={isLoading}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 order-1 sm:order-2"
                                 >
                                     {isLoading ? (
                                         <>
@@ -822,12 +848,11 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                 </div>
             )}
 
-            {/* Edit Case Modal */}
             {isEditModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-lg">
-                        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-                            <h2 className="text-xl font-semibold text-white">
+                        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-700">
+                            <h2 className="text-lg sm:text-xl font-semibold text-white">
                                 Edit Case
                             </h2>
                             <button
@@ -838,10 +863,10 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                             </button>
                         </div>
 
-                        <div className="p-6 space-y-4">
+                        <div className="p-4 sm:p-6 space-y-4">
                             {editError && (
-                                <div className="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-center space-x-2">
-                                    <AlertCircle className="w-5 h-5 text-red-400" />
+                                <div className="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-start space-x-2">
+                                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                                     <span className="text-red-400 text-sm">
                                         {editError}
                                     </span>
@@ -895,11 +920,11 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                 </div>
                             </div>
 
-                            <div className="flex justify-end space-x-3 pt-4">
+                            <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
                                 <button
                                     type="button"
                                     onClick={closeEditModal}
-                                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors order-2 sm:order-1"
                                 >
                                     Cancel
                                 </button>
@@ -907,7 +932,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                     type="button"
                                     onClick={handleUpdateCase}
                                     disabled={isUpdating}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center space-x-2"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center space-x-2 order-1 sm:order-2"
                                 >
                                     {isUpdating ? (
                                         <>
