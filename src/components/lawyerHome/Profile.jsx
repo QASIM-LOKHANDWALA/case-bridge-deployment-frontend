@@ -13,6 +13,7 @@ import {
     Upload,
     FileText,
     AlertTriangle,
+    Loader2,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -23,7 +24,7 @@ const isDev = import.meta.env.VITE_DEV;
 
 const Profile = () => {
     const { user, token, profile, error } = useAuth();
-
+    const [isDocUploading, setIsDocUploading] = React.useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
 
     const getExperienceText = (experienceYears) => {
@@ -56,6 +57,7 @@ const Profile = () => {
 
     const handleDocumentUpload = async (e) => {
         e.preventDefault();
+        setIsDocUploading(true);
         const formData = new FormData();
         if (documentForm.photo_id)
             formData.append("photo_id", documentForm.photo_id);
@@ -86,6 +88,8 @@ const Profile = () => {
                     error.response?.data || error.message
                 );
             toast.error("Failed to upload documents");
+        } finally {
+            setIsDocUploading(false);
         }
     };
 
@@ -423,12 +427,23 @@ const Profile = () => {
                             <button
                                 type="submit"
                                 disabled={
-                                    !documentForm.photo_id || !documentForm.cop
+                                    isDocUploading ||
+                                    !documentForm.photo_id ||
+                                    !documentForm.cop
                                 }
                                 className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg"
                             >
-                                <Upload className="w-4 h-4" />
-                                <span>Upload Documents</span>
+                                {isDocUploading ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        <span>Uploading...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Upload className="w-4 h-4" />
+                                        <span>Upload Documents</span>
+                                    </>
+                                )}
                             </button>
                         </div>
                     </form>
