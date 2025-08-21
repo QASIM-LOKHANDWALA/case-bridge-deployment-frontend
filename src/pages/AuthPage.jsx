@@ -785,17 +785,6 @@ const AuthPage = () => {
                                         </button>
                                     </p>
                                 </div>
-
-                                {!isSignup && (
-                                    <div className="text-center">
-                                        <button
-                                            type="button"
-                                            className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
-                                        >
-                                            Forgot your password?
-                                        </button>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

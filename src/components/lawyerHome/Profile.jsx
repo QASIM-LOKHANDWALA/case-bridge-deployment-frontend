@@ -80,7 +80,7 @@ const Profile = () => {
 
                 toast.success("Documents uploaded successfully");
             }
-            window.location.reload();
+            handleProfileUpdate();
         } catch (error) {
             if (isDev)
                 console.error(
