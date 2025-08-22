@@ -209,7 +209,7 @@ const AuthPage = () => {
                         <div className="text-center mb-8">
                             <h1 className="text-4xl font-bold text-white mb-4">
                                 Welcome to{" "}
-                                <span className="text-blue-400">
+                                <span className="text-emerald-400">
                                     <Link to="/">Case Bridge</Link>
                                 </span>
                             </h1>
@@ -221,8 +221,8 @@ const AuthPage = () => {
                         <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
                             <div className="space-y-6">
                                 <div className="flex items-center space-x-4">
-                                    <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                                        <Shield className="w-6 h-6 text-blue-400" />
+                                    <div className="w-12 h-12 bg-emerald-600/20 rounded-lg flex items-center justify-center">
+                                        <Shield className="w-6 h-6 text-emerald-400" />
                                     </div>
                                     <div>
                                         <h3 className="text-white font-semibold">
@@ -235,8 +235,8 @@ const AuthPage = () => {
                                 </div>
 
                                 <div className="flex items-center space-x-4">
-                                    <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                                        <Scale className="w-6 h-6 text-blue-400" />
+                                    <div className="w-12 h-12 bg-emerald-600/20 rounded-lg flex items-center justify-center">
+                                        <Scale className="w-6 h-6 text-emerald-400" />
                                     </div>
                                     <div>
                                         <h3 className="text-white font-semibold">
@@ -249,8 +249,8 @@ const AuthPage = () => {
                                 </div>
 
                                 <div className="flex items-center space-x-4">
-                                    <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                                        <CheckCircle className="w-6 h-6 text-blue-400" />
+                                    <div className="w-12 h-12 bg-emerald-600/20 rounded-lg flex items-center justify-center">
+                                        <CheckCircle className="w-6 h-6 text-emerald-400" />
                                     </div>
                                     <div>
                                         <h3 className="text-white font-semibold">
@@ -293,7 +293,7 @@ const AuthPage = () => {
                                     </div>
                                     <div className="w-full bg-gray-700 rounded-full h-2">
                                         <div
-                                            className="bg-gradient-to-r from-blue-600 to-blue-500 h-2 rounded-full transition-all duration-300"
+                                            className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-2 rounded-full transition-all duration-300"
                                             style={{
                                                 width: `${
                                                     (currentStep / totalSteps) *
@@ -737,7 +737,7 @@ const AuthPage = () => {
                                                     ? !isStep1Valid()
                                                     : !isStep2Valid()
                                             }
-                                            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                                            className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                                         >
                                             <span>Continue</span>
                                             <ArrowRight className="w-5 h-5" />
@@ -747,7 +747,7 @@ const AuthPage = () => {
                                             type="button"
                                             onClick={handleSubmit}
                                             disabled={loading}
-                                            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                                            className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                                         >
                                             {loading ? (
                                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -779,7 +779,7 @@ const AuthPage = () => {
                                         <button
                                             type="button"
                                             onClick={toggleMode}
-                                            className="text-blue-400 hover:text-blue-300 font-semibold ml-2 transition-colors"
+                                            className="text-emerald-400 hover:text-emerald-300 font-semibold ml-2 transition-colors"
                                         >
                                             {isSignup ? "Sign In" : "Sign Up"}
                                         </button>

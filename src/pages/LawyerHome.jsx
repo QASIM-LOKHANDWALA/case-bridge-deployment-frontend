@@ -67,10 +67,10 @@ const LawyerHome = () => {
         setCases((prev) => [...prev, newCase]);
     };
 
-    const handleClientRequest = async (hireId, status) => {
+    const handleClientRequest = async (clientId, status) => {
         try {
             const response = await axiosInstance.patch(
-                `/api/hire/${hireId}/respond/`,
+                `/api/hire/${clientId}/respond/`,
                 {
                     status: status,
                 },
@@ -82,18 +82,12 @@ const LawyerHome = () => {
             );
 
             if (response.status === 200) {
-                const updatedClients = clients.map((client) =>
-                    client.hire_id === hireId
-                        ? { ...client, hire_status: status }
-                        : client
-                );
+                fetchClients();
                 if (isDev)
                     console.log(
                         "Client hire request accepted: ",
                         response.data
                     );
-
-                setClients(updatedClients);
             }
         } catch (error) {
             if (isDev)
@@ -185,7 +179,7 @@ const LawyerHome = () => {
                         </button>
 
                         <div className="text-xl md:text-2xl font-bold text-white">
-                            Case<span className="text-blue-400">Bridge</span>
+                            Case<span className="text-emerald-400">Bridge</span>
                         </div>
                         <div className="hidden md:block text-sm text-gray-400">
                             Lawyer Dashboard
@@ -247,7 +241,7 @@ const LawyerHome = () => {
                                     }
                                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                                         activeTab === item.id
-                                            ? "bg-blue-600 text-white"
+                                            ? "bg-emerald-600 text-white"
                                             : "text-gray-400 hover:text-white hover:bg-gray-700"
                                     }`}
                                 >
@@ -288,7 +282,7 @@ const LawyerHome = () => {
                             }
                             className={`flex flex-col items-center space-y-1 px-2 py-2 rounded-lg transition-colors ${
                                 activeTab === item.id
-                                    ? "text-blue-400"
+                                    ? "text-emerald-400"
                                     : "text-gray-500 hover:text-gray-300"
                             }`}
                         >

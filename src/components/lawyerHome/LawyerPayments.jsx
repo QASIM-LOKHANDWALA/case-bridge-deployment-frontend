@@ -254,7 +254,7 @@ const LawyerPayments = ({ clients, token }) => {
             case "failed":
                 return <XCircle className="w-4 h-4 text-red-400" />;
             case "refunded":
-                return <RefreshCw className="w-4 h-4 text-blue-400" />;
+                return <RefreshCw className="w-4 h-4 text-emerald-400" />;
             default:
                 return <AlertCircle className="w-4 h-4 text-gray-400" />;
         }
@@ -269,7 +269,7 @@ const LawyerPayments = ({ clients, token }) => {
             case "failed":
                 return "bg-red-600/20 text-red-400 border-red-600/30";
             case "refunded":
-                return "bg-blue-600/20 text-blue-400 border-blue-600/30";
+                return "bg-emerald-600/20 text-emerald-400 border-blue-600/30";
             default:
                 return "bg-gray-600/20 text-gray-400 border-gray-600/30";
         }
@@ -320,7 +320,7 @@ const LawyerPayments = ({ clients, token }) => {
                 </h3>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto"
                 >
                     <Plus className="w-4 h-4" />
                     <span>Create Payment Request</span>
@@ -508,7 +508,7 @@ const LawyerPayments = ({ clients, token }) => {
                                                             transaction
                                                         )
                                                     }
-                                                    className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
+                                                    className="p-2 text-gray-400 hover:text-emerald-400 transition-colors"
                                                     title="View Details"
                                                 >
                                                     <Eye className="w-4 h-4" />
@@ -590,7 +590,7 @@ const LawyerPayments = ({ clients, token }) => {
                                                                 transaction
                                                             )
                                                         }
-                                                        className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
+                                                        className="p-2 text-gray-400 hover:text-emerald-400 transition-colors"
                                                         title="View Details"
                                                     >
                                                         <Eye className="w-4 h-4" />
@@ -824,7 +824,7 @@ const LawyerPayments = ({ clients, token }) => {
                                     type="button"
                                     onClick={handleSubmit}
                                     disabled={isLoading}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 order-1 sm:order-2"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 order-1 sm:order-2"
                                 >
                                     {isLoading ? (
                                         <>

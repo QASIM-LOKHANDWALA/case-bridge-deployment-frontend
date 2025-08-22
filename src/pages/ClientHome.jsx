@@ -184,8 +184,8 @@ const ClientHome = () => {
                                 No hired lawyers yet
                             </h4>
 
-                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
-                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                            <div className="bg-emerald-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-emerald-400">
                                     <Search className="w-5 h-5" />
                                     <span className="text-sm">
                                         Discover lawyers to hire.
@@ -282,7 +282,7 @@ const ClientHome = () => {
                         </button>
 
                         <div className="text-xl md:text-2xl font-bold text-white">
-                            Case<span className="text-blue-400">Bridge</span>
+                            Case<span className="text-emerald-400">Bridge</span>
                         </div>
                         <div className="hidden md:block text-sm text-gray-400">
                             Client Dashboard
@@ -342,7 +342,7 @@ const ClientHome = () => {
                                     }
                                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                                         activeTab === item.id
-                                            ? "bg-blue-600 text-white"
+                                            ? "bg-emerald-600 text-white"
                                             : "text-gray-400 hover:text-white hover:bg-gray-700"
                                     }`}
                                 >
@@ -383,7 +383,7 @@ const ClientHome = () => {
                             }
                             className={`flex flex-col items-center space-y-1 px-2 py-2 rounded-lg transition-colors ${
                                 activeTab === item.id
-                                    ? "text-blue-400"
+                                    ? "text-emerald-400"
                                     : "text-gray-500 hover:text-gray-300"
                             }`}
                         >

@@ -66,7 +66,7 @@ const Appointments = () => {
             case "scheduled":
                 return <Clock className="w-4 h-4 text-yellow-400" />;
             default:
-                return <Clock className="w-4 h-4 text-blue-400" />;
+                return <Clock className="w-4 h-4 text-emerald-400" />;
         }
     };
 
@@ -79,7 +79,7 @@ const Appointments = () => {
             case "scheduled":
                 return "bg-yellow-600/20 text-yellow-400";
             default:
-                return "bg-blue-600/20 text-blue-400";
+                return "bg-emerald-600/20 text-emerald-400";
         }
     };
 
@@ -167,7 +167,7 @@ const Appointments = () => {
                         My Appointments
                     </h3>
                 </div>
-                <div className="bg-blue-600/20 text-blue-400 px-3 py-2 rounded-lg text-sm flex items-center space-x-2">
+                <div className="bg-emerald-600/20 text-emerald-400 px-3 py-2 rounded-lg text-sm flex items-center space-x-2">
                     <CalendarDays className="w-4 h-4" />
                     <span>{appointments.length} Total</span>
                 </div>
@@ -226,8 +226,8 @@ const Appointments = () => {
                             {!searchTerm &&
                                 statusFilter === "all" &&
                                 dateFilter === "all" && (
-                                    <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
-                                        <div className="flex items-center justify-center space-x-2 text-blue-400">
+                                    <div className="bg-emerald-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                        <div className="flex items-center justify-center space-x-2 text-emerald-400">
                                             <FileText className="w-5 h-5" />
                                             <span className="text-sm">
                                                 Contact your lawyer to schedule
@@ -282,7 +282,7 @@ const Appointments = () => {
                                         onClick={() =>
                                             openDetailModal(appointment)
                                         }
-                                        className="flex items-center space-x-1 text-blue-400 hover:text-blue-300 transition-colors text-sm"
+                                        className="flex items-center space-x-1 text-emerald-400 hover:text-emerald-300 transition-colors text-sm"
                                     >
                                         <Eye className="w-4 h-4" />
                                         <span>Details</span>
@@ -309,7 +309,7 @@ const Appointments = () => {
                                             <p className="text-xs text-gray-400">
                                                 Time
                                             </p>
-                                            <p className="text-sm text-blue-400">
+                                            <p className="text-sm text-emerald-400">
                                                 {formatTime(
                                                     appointment.appointment_time
                                                 )}
@@ -384,7 +384,7 @@ const Appointments = () => {
                                             <Clock className="w-4 h-4 inline mr-1" />
                                             Time
                                         </label>
-                                        <p className="text-blue-400 bg-gray-700 px-3 py-2 rounded-lg">
+                                        <p className="text-emerald-400 bg-gray-700 px-3 py-2 rounded-lg">
                                             {formatTime(
                                                 selectedAppointment.appointment_time
                                             )}

@@ -133,9 +133,9 @@ const DiscoverLawyers = ({
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-semibold text-white">
                         Find Your Perfect{" "}
-                        <span className="text-blue-400">Legal Partner</span>
+                        <span className="text-emerald-400">Legal Partner</span>
                     </h2>
-                    <div className="flex items-center space-x-2 bg-blue-600/20 border border-blue-600/30 rounded-full px-4 py-2 text-sm text-blue-300">
+                    <div className="flex items-center space-x-2 bg-emerald-600/20 border border-blue-600/30 rounded-full px-4 py-2 text-sm text-emerald-300">
                         <Shield className="w-4 h-4" />
                         <span>{filteredLawyers.length} Verified Lawyers</span>
                     </div>
@@ -160,7 +160,7 @@ const DiscoverLawyers = ({
                         <Filter className="w-5 h-5" />
                         <span>Filters</span>
                         {activeFiltersCount > 0 && (
-                            <span className="bg-blue-600 text-white text-xs rounded-full px-2 py-1">
+                            <span className="bg-emerald-600 text-white text-xs rounded-full px-2 py-1">
                                 {activeFiltersCount}
                             </span>
                         )}
@@ -245,7 +245,7 @@ const DiscoverLawyers = ({
                             <div className="mt-4 flex justify-end">
                                 <button
                                     onClick={clearFilters}
-                                    className="text-blue-400 hover:text-blue-300 text-sm"
+                                    className="text-emerald-400 hover:text-emerald-300 text-sm"
                                 >
                                     Clear all filters
                                 </button>
@@ -298,7 +298,7 @@ const DiscoverLawyers = ({
                     </p>
                     <button
                         onClick={clearFilters}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                     >
                         Clear All Filters
                     </button>

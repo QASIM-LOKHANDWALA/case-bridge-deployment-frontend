@@ -114,32 +114,32 @@ const LandingPage = () => {
                         <div className="flex items-center space-x-2">
                             <div className="text-2xl font-bold text-white">
                                 Case
-                                <span className="text-blue-400">Bridge</span>
+                                <span className="text-emerald-400">Bridge</span>
                             </div>
                         </div>
 
                         <div className="hidden md:flex items-center space-x-8">
                             <a
                                 href="#features"
-                                className="text-gray-300 hover:text-blue-400 transition-colors"
+                                className="text-gray-300 hover:text-emerald-400 transition-colors"
                             >
                                 Features
                             </a>
                             <a
                                 href="#how-it-works"
-                                className="text-gray-300 hover:text-blue-400 transition-colors"
+                                className="text-gray-300 hover:text-emerald-400 transition-colors"
                             >
                                 How It Works
                             </a>
                             <a
                                 href="#testimonials"
-                                className="text-gray-300 hover:text-blue-400 transition-colors"
+                                className="text-gray-300 hover:text-emerald-400 transition-colors"
                             >
                                 Testimonials
                             </a>
                             <Link
                                 to="/auth"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                                className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
                             >
                                 Get Started
                             </Link>
@@ -162,26 +162,26 @@ const LandingPage = () => {
                             <div className="flex flex-col space-y-4 pt-4">
                                 <a
                                     href="#features"
-                                    className="text-gray-300 hover:text-blue-400 transition-colors"
+                                    className="text-gray-300 hover:text-emerald-400 transition-colors"
                                 >
                                     Features
                                 </a>
                                 <a
                                     href="#how-it-works"
-                                    className="text-gray-300 hover:text-blue-400 transition-colors"
+                                    className="text-gray-300 hover:text-emerald-400 transition-colors"
                                 >
                                     How It Works
                                 </a>
                                 <a
                                     href="#testimonials"
-                                    className="text-gray-300 hover:text-blue-400 transition-colors"
+                                    className="text-gray-300 hover:text-emerald-400 transition-colors"
                                 >
                                     Testimonials
                                 </a>
 
                                 <Link
                                     to="/auth"
-                                    className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold text-left"
+                                    className="bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold text-left"
                                 >
                                     Get Started
                                 </Link>
@@ -204,7 +204,7 @@ const LandingPage = () => {
                                     : "opacity-0 translate-y-10"
                             }`}
                         >
-                            <div className="inline-flex items-center space-x-2 bg-blue-600/20 border border-blue-600/30 rounded-full px-4 py-2 text-sm text-blue-300 mb-6">
+                            <div className="inline-flex items-center space-x-2 bg-emerald-600/20 border border-emerald-600/30 rounded-full px-4 py-2 text-sm text-emerald-300 mb-6">
                                 <Shield className="w-4 h-4" />
                                 <span>
                                     Trusted by 50,000+ Legal Professionals
@@ -213,7 +213,7 @@ const LandingPage = () => {
 
                             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                                 Your Complete{" "}
-                                <span className="text-blue-400">
+                                <span className="text-emerald-400">
                                     Legal Solution
                                 </span>{" "}
                                 for Modern India
@@ -229,7 +229,7 @@ const LandingPage = () => {
                             <div className="flex flex-col sm:flex-row gap-4 mb-8">
                                 <Link
                                     to="/auth"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center space-x-2"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center space-x-2"
                                 >
                                     <span>Start Your Legal Journey</span>
                                     <ArrowRight className="w-5 h-5" />
@@ -269,7 +269,7 @@ const LandingPage = () => {
                                             Legal Dashboard
                                         </h3>
                                         <div className="flex items-center space-x-2">
-                                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                            <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center">
                                                 <Users className="w-4 h-4" />
                                             </div>
                                         </div>
@@ -278,7 +278,7 @@ const LandingPage = () => {
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="bg-gray-700 p-3 rounded-lg">
                                             <div className="flex items-center space-x-2">
-                                                <Calendar className="w-4 h-4 text-blue-400" />
+                                                <Calendar className="w-4 h-4 text-emerald-400" />
                                                 <div>
                                                     <div className="text-xs text-gray-400">
                                                         Next Hearing
@@ -310,7 +310,7 @@ const LandingPage = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <div className="flex items-center space-x-3 p-2 bg-gray-700 rounded">
-                                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                                <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                                                 <div className="flex-1">
                                                     <div className="text-xs text-gray-300">
                                                         Document uploaded
@@ -336,7 +336,7 @@ const LandingPage = () => {
                                 </div>
                             </div>
 
-                            <div className="absolute -top-4 -right-4 bg-blue-600 p-3 rounded-xl shadow-lg">
+                            <div className="absolute -top-4 -right-4 bg-emerald-600 p-3 rounded-xl shadow-lg">
                                 <MessageCircle className="w-6 h-6" />
                             </div>
                             <div className="absolute -bottom-4 -left-4 bg-green-600 p-3 rounded-xl shadow-lg">
@@ -363,9 +363,9 @@ const LandingPage = () => {
                         {features.map((feature, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-900 p-8 rounded-xl border border-gray-700 hover:border-blue-600/50 transition-all duration-300 hover:transform hover:scale-105 group"
+                                className="bg-gray-900 p-8 rounded-xl border border-gray-700 hover:border-emerald-600/50 transition-all duration-300 hover:transform hover:scale-105 group"
                             >
-                                <div className="text-blue-400 mb-4 group-hover:text-blue-300 transition-colors">
+                                <div className="text-emerald-400 mb-4 group-hover:text-emerald-300 transition-colors">
                                     {feature.icon}
                                 </div>
                                 <h3 className="text-xl font-semibold mb-3 text-white">
@@ -393,7 +393,7 @@ const LandingPage = () => {
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="text-center relative">
-                            <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div className="bg-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <Search className="w-8 h-8" />
                             </div>
                             <h3 className="text-xl font-semibold mb-3 text-white">
@@ -404,11 +404,11 @@ const LandingPage = () => {
                                 professionals based on your specific needs and
                                 location.
                             </p>
-                            <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-blue-600/30 transform translate-x-8"></div>
+                            <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-emerald-600/30 transform translate-x-8"></div>
                         </div>
 
                         <div className="text-center relative">
-                            <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div className="bg-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <Calendar className="w-8 h-8" />
                             </div>
                             <h3 className="text-xl font-semibold mb-3 text-white">
@@ -418,11 +418,11 @@ const LandingPage = () => {
                                 Track court dates, share documents, and manage
                                 all aspects of your legal case in one place.
                             </p>
-                            <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-blue-600/30 transform translate-x-8"></div>
+                            <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-emerald-600/30 transform translate-x-8"></div>
                         </div>
 
                         <div className="text-center">
-                            <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div className="bg-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <Shield className="w-8 h-8" />
                             </div>
                             <h3 className="text-xl font-semibold mb-3 text-white">
@@ -472,7 +472,7 @@ const LandingPage = () => {
                                     <p className="font-semibold text-white">
                                         {testimonial.name}
                                     </p>
-                                    <p className="text-blue-400">
+                                    <p className="text-emerald-400">
                                         {testimonial.role}
                                     </p>
                                 </div>
@@ -482,14 +482,14 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            <section className="py-20 bg-blue-600">
+            <section className="py-20 bg-emerald-600">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-4 gap-8 text-center">
                         <div>
                             <div className="text-4xl font-bold mb-2">
                                 10,000+
                             </div>
-                            <div className="text-blue-100">
+                            <div className="text-emerald-100">
                                 Verified Lawyers
                             </div>
                         </div>
@@ -497,17 +497,17 @@ const LandingPage = () => {
                             <div className="text-4xl font-bold mb-2">
                                 25,000+
                             </div>
-                            <div className="text-blue-100">Cases Managed</div>
+                            <div className="text-emerald-100">Cases Managed</div>
                         </div>
                         <div>
                             <div className="text-4xl font-bold mb-2">
                                 50,000+
                             </div>
-                            <div className="text-blue-100">Happy Clients</div>
+                            <div className="text-emerald-100">Happy Clients</div>
                         </div>
                         <div>
                             <div className="text-4xl font-bold mb-2">99%</div>
-                            <div className="text-blue-100">Success Rate</div>
+                            <div className="text-emerald-100">Success Rate</div>
                         </div>
                     </div>
                 </div>
@@ -526,7 +526,7 @@ const LandingPage = () => {
                         </p>
                         <Link
                             to="/auth"
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors inline-flex items-center space-x-2"
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors inline-flex items-center space-x-2"
                         >
                             <span>Get Started Now</span>
                             <ArrowRight className="w-5 h-5" />

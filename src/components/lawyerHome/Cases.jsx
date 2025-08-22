@@ -277,7 +277,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                 return <File className="w-4 h-4 text-red-400" />;
             case "doc":
             case "docx":
-                return <FileText className="w-4 h-4 text-blue-400" />;
+                return <FileText className="w-4 h-4 text-emerald-400" />;
             case "xls":
             case "xlsx":
                 return <File className="w-4 h-4 text-green-400" />;
@@ -341,7 +341,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                 onClick={() =>
                                     window.open(doc.document, "_blank")
                                 }
-                                className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
+                                className="p-2 text-gray-400 hover:text-emerald-400 transition-colors"
                                 title="View document"
                             >
                                 <Eye className="w-4 h-4" />
@@ -365,7 +365,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                 {remainingCount > 0 && (
                     <button
                         onClick={() => setShowAll(!showAll)}
-                        className="w-full py-2 text-center text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                        className="w-full py-2 text-center text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
                     >
                         {showAll ? (
                             <>
@@ -400,7 +400,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                 <h3 className="text-lg font-semibold text-white">My Cases</h3>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto"
                 >
                     <Plus className="w-4 h-4" />
                     <span>Add Case</span>
@@ -464,8 +464,8 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                             <h4 className="text-lg font-semibold text-white mb-2">
                                 No cases created
                             </h4>
-                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
-                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                            <div className="bg-emerald-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-emerald-400">
                                     <Users className="w-5 h-5" />
                                     <span className="text-sm text-center">
                                         Connect with clients to get started
@@ -495,7 +495,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                             onClick={() =>
                                                 handleEditCase(case_)
                                             }
-                                            className="p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors"
+                                            className="p-2 text-gray-400 hover:text-emerald-400 hover:bg-gray-700 rounded-lg transition-colors"
                                             title="Edit case"
                                         >
                                             <Edit3 className="w-4 h-4" />
@@ -553,7 +553,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                         <p className="text-xs text-gray-400 mb-1">
                                             Next Hearing
                                         </p>
-                                        <p className="text-sm text-blue-400">
+                                        <p className="text-sm text-emerald-400">
                                             {case_.next_hearing}
                                         </p>
                                     </div>
@@ -623,7 +623,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                                     />
                                                     <label
                                                         htmlFor={`file-upload-${case_.id}`}
-                                                        className={`text-blue-400 hover:text-blue-300 text-sm flex items-center justify-center sm:justify-start space-x-1 cursor-pointer ${
+                                                        className={`text-emerald-400 hover:text-emerald-300 text-sm flex items-center justify-center sm:justify-start space-x-1 cursor-pointer ${
                                                             uploadingFiles.has(
                                                                 case_.id
                                                             )
@@ -828,7 +828,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                     type="button"
                                     onClick={handleSubmit}
                                     disabled={isLoading}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 order-1 sm:order-2"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 order-1 sm:order-2"
                                 >
                                     {isLoading ? (
                                         <>
@@ -932,7 +932,7 @@ const Cases = ({ cases, onCaseAdded, fetchCases, clients }) => {
                                     type="button"
                                     onClick={handleUpdateCase}
                                     disabled={isUpdating}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center space-x-2 order-1 sm:order-2"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center space-x-2 order-1 sm:order-2"
                                 >
                                     {isUpdating ? (
                                         <>

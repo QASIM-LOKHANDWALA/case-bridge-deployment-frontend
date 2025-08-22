@@ -58,7 +58,7 @@ const Cases = ({ cases }) => {
                 return <File className="w-4 h-4 text-red-400" />;
             case "doc":
             case "docx":
-                return <FileText className="w-4 h-4 text-blue-400" />;
+                return <FileText className="w-4 h-4 text-emerald-400" />;
             case "xls":
             case "xlsx":
                 return <File className="w-4 h-4 text-green-400" />;
@@ -122,7 +122,7 @@ const Cases = ({ cases }) => {
                                 onClick={() =>
                                     window.open(doc.document, "_blank")
                                 }
-                                className="p-1 text-gray-400 hover:text-blue-400 transition-colors"
+                                className="p-1 text-gray-400 hover:text-emerald-400 transition-colors"
                                 title="View document"
                             >
                                 <Eye className="w-4 h-4" />
@@ -147,7 +147,7 @@ const Cases = ({ cases }) => {
                 {remainingCount > 0 && (
                     <button
                         onClick={() => setShowAll(!showAll)}
-                        className="w-full py-2 text-center text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                        className="w-full py-2 text-center text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
                     >
                         {showAll ? (
                             <>
@@ -181,8 +181,8 @@ const Cases = ({ cases }) => {
                                 No cases created
                             </h4>
 
-                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
-                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                            <div className="bg-emerald-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-emerald-400">
                                     <Users className="w-5 h-5" />
                                     <span className="text-sm">
                                         Hire lawyers to view cases.
@@ -255,7 +255,7 @@ const Cases = ({ cases }) => {
                                         <p className="text-xs text-gray-400 mb-1">
                                             Next Hearing
                                         </p>
-                                        <p className="text-sm text-blue-400">
+                                        <p className="text-sm text-emerald-400">
                                             {case_.next_hearing}
                                         </p>
                                     </div>

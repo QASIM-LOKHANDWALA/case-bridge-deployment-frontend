@@ -245,7 +245,7 @@ const ClientPayment = ({ token }) => {
             case "failed":
                 return <XCircle className="w-4 h-4 text-red-400" />;
             case "refunded":
-                return <RefreshCw className="w-4 h-4 text-blue-400" />;
+                return <RefreshCw className="w-4 h-4 text-emerald-400" />;
             default:
                 return <AlertCircle className="w-4 h-4 text-gray-400" />;
         }
@@ -260,7 +260,7 @@ const ClientPayment = ({ token }) => {
             case "failed":
                 return "bg-red-600/20 text-red-400 border-red-600/30";
             case "refunded":
-                return "bg-blue-600/20 text-blue-400 border-blue-600/30";
+                return "bg-emerald-600/20 text-emerald-400 border-blue-600/30";
             default:
                 return "bg-gray-600/20 text-gray-400 border-gray-600/30";
         }
@@ -424,7 +424,7 @@ const ClientPayment = ({ token }) => {
                                             onClick={() =>
                                                 openDetailModal(request)
                                             }
-                                            className="flex items-center justify-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors py-2 px-3 rounded-lg bg-blue-600/10 hover:bg-blue-600/20"
+                                            className="flex items-center justify-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors py-2 px-3 rounded-lg bg-emerald-600/10 hover:bg-emerald-600/20"
                                         >
                                             <Eye className="w-4 h-4" />
                                             <span className="text-sm">
@@ -494,7 +494,7 @@ const ClientPayment = ({ token }) => {
                                             onClick={() =>
                                                 openDetailModal(request)
                                             }
-                                            className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
+                                            className="flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
                                         >
                                             <Eye className="w-4 h-4" />
                                             <span>View Details</span>
@@ -572,7 +572,7 @@ const ClientPayment = ({ token }) => {
                                                 onClick={() =>
                                                     openDetailModal(request)
                                                 }
-                                                className="p-2 text-gray-400 hover:text-blue-400 transition-colors flex-shrink-0"
+                                                className="p-2 text-gray-400 hover:text-emerald-400 transition-colors flex-shrink-0"
                                                 title="View Details"
                                             >
                                                 <Eye className="w-4 h-4" />
@@ -662,7 +662,7 @@ const ClientPayment = ({ token }) => {
                                                     onClick={() =>
                                                         openDetailModal(request)
                                                     }
-                                                    className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
+                                                    className="p-2 text-gray-400 hover:text-emerald-400 transition-colors"
                                                     title="View Details"
                                                 >
                                                     <Eye className="w-4 h-4" />

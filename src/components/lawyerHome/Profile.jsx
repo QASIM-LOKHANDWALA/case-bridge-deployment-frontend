@@ -126,7 +126,7 @@ const Profile = () => {
                     </h3>
                     <button
                         onClick={() => setIsEditModalOpen(true)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2"
                     >
                         <Edit className="w-4 h-4" />
                         <span>Edit Profile</span>
@@ -243,7 +243,7 @@ const Profile = () => {
                                     <span className="text-gray-400">
                                         User Role:
                                     </span>
-                                    <span className="text-blue-400 capitalize">
+                                    <span className="text-emerald-400 capitalize">
                                         {user?.role || "Lawyer"}
                                     </span>
                                 </div>
@@ -299,7 +299,7 @@ const Profile = () => {
                         {user.number_of_clients}
                     </div>
                     <div className="flex items-center justify-center mb-1">
-                        <Users className="w-4 h-4 text-blue-400" />
+                        <Users className="w-4 h-4 text-emerald-400" />
                     </div>
                     <p className="text-sm text-gray-400">Clients Served</p>
                 </div>
@@ -329,7 +329,7 @@ const Profile = () => {
                         </p>
                         <div className="flex flex-col space-y-2 text-sm">
                             <div className="flex items-center space-x-2">
-                                <FileText className="w-4 h-4 text-blue-400" />
+                                <FileText className="w-4 h-4 text-emerald-400" />
                                 <span className="text-gray-300">
                                     Valid Photo ID (Aadhaar, PAN, Driving
                                     License)
@@ -431,7 +431,7 @@ const Profile = () => {
                                     !documentForm.photo_id ||
                                     !documentForm.cop
                                 }
-                                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg"
+                                className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg"
                             >
                                 {isDocUploading ? (
                                     <>

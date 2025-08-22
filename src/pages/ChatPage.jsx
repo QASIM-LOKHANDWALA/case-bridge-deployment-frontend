@@ -281,7 +281,7 @@ const ChatPage = () => {
                     <div
                         className={`px-4 py-2 rounded-2xl shadow-sm ${
                             isOwnMessage
-                                ? "bg-blue-600 text-white"
+                                ? "bg-emerald-600 text-white"
                                 : "bg-gray-700 text-white"
                         } ${isOwnMessage ? "rounded-br-md" : "rounded-bl-md"}`}
                     >
@@ -322,7 +322,7 @@ const ChatPage = () => {
                                 <div className="flex items-center space-x-4">
                                     <div className="text-2xl font-bold text-white">
                                         Case
-                                        <span className="text-blue-400">
+                                        <span className="text-emerald-400">
                                             Bridge
                                         </span>
                                     </div>
@@ -354,7 +354,7 @@ const ChatPage = () => {
                                 <div className="flex items-center space-x-4">
                                     <div className="text-2xl font-bold text-white">
                                         Case
-                                        <span className="text-blue-400">
+                                        <span className="text-emerald-400">
                                             Bridge
                                         </span>
                                     </div>
@@ -394,7 +394,7 @@ const ChatPage = () => {
                             <div className="p-4 bg-gray-800 border-b border-gray-700">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center space-x-2">
-                                        <MessageCircle className="w-6 h-6 text-blue-400" />
+                                        <MessageCircle className="w-6 h-6 text-emerald-400" />
                                         <h2 className="text-xl font-semibold text-white">
                                             Messages
                                         </h2>
@@ -577,7 +577,7 @@ const ChatPage = () => {
                                             <button
                                                 onClick={sendMessage}
                                                 disabled={!newText.trim()}
-                                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-all duration-200 flex items-center justify-center transform hover:scale-105 active:scale-95"
+                                                className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-all duration-200 flex items-center justify-center transform hover:scale-105 active:scale-95"
                                             >
                                                 <Send className="w-5 h-5" />
                                             </button>

@@ -235,7 +235,7 @@ const Appointments = ({ clients }) => {
             case "no_show":
                 return <AlertCircle className="w-4 h-4 text-orange-400" />;
             default:
-                return <Clock className="w-4 h-4 text-blue-400" />;
+                return <Clock className="w-4 h-4 text-emerald-400" />;
         }
     };
 
@@ -250,7 +250,7 @@ const Appointments = ({ clients }) => {
             case "no_show":
                 return "bg-orange-600/20 text-orange-400";
             default:
-                return "bg-blue-600/20 text-blue-400";
+                return "bg-emerald-600/20 text-emerald-400";
         }
     };
 
@@ -259,7 +259,7 @@ const Appointments = ({ clients }) => {
             case "court_hearing":
                 return <CalendarDays className="w-4 h-4 text-purple-400" />;
             case "video_call":
-                return <Video className="w-4 h-4 text-blue-400" />;
+                return <Video className="w-4 h-4 text-emerald-400" />;
             case "phone_call":
                 return <Phone className="w-4 h-4 text-green-400" />;
             default:
@@ -356,7 +356,7 @@ const Appointments = ({ clients }) => {
                 </h3>
                 <button
                     onClick={() => openModal()}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2"
                 >
                     <Plus className="w-4 h-4" />
                     <span>Schedule Appointment</span>
@@ -407,8 +407,8 @@ const Appointments = ({ clients }) => {
                                 No appointments found
                             </h4>
 
-                            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
-                                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                            <div className="bg-emerald-600/10 border border-blue-600/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center justify-center space-x-2 text-emerald-400">
                                     <User className="w-5 h-5" />
                                     <span className="text-sm">
                                         Scheduled appointments with clients will
@@ -480,7 +480,7 @@ const Appointments = ({ clients }) => {
                                         <p className="text-xs text-gray-400 mb-1">
                                             Time
                                         </p>
-                                        <p className="text-sm text-blue-400">
+                                        <p className="text-sm text-emerald-400">
                                             {formatTime(
                                                 appointment.appointment_time
                                             )}
@@ -545,8 +545,8 @@ const Appointments = ({ clients }) => {
                                                 }
                                                 targetStatus="scheduled"
                                                 label="Confirm"
-                                                bgColor="bg-blue-600"
-                                                hoverColor="hover:bg-blue-700"
+                                                bgColor="bg-emerald-600"
+                                                hoverColor="hover:bg-emerald-700"
                                                 icon={Clock}
                                             />
                                             <StatusButton
@@ -569,8 +569,8 @@ const Appointments = ({ clients }) => {
                                             currentStatus={appointment.status}
                                             targetStatus="scheduled"
                                             label="Reschedule"
-                                            bgColor="bg-blue-600"
-                                            hoverColor="hover:bg-blue-700"
+                                            bgColor="bg-emerald-600"
+                                            hoverColor="hover:bg-emerald-700"
                                             icon={Calendar}
                                         />
                                     )}
@@ -730,7 +730,7 @@ const Appointments = ({ clients }) => {
                                     type="button"
                                     onClick={handleSubmit}
                                     disabled={isLoading}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                                 >
                                     {isLoading ? (
                                         <>

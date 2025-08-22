@@ -10,6 +10,7 @@ import {
     Clock,
 } from "lucide-react";
 import axiosInstance from "../../services/axiosInstance";
+import toast from "react-hot-toast";
 
 const isDev = import.meta.env.VITE_DEV;
 
@@ -20,7 +21,7 @@ const getStatusColor = (status) => {
         case "completed":
             return "bg-green-500 text-green-100";
         case "refunded":
-            return "bg-blue-500 text-blue-100";
+            return "bg-emerald-500 text-emerald-100";
         case "failed":
             return "bg-red-500 text-red-100";
         default:
@@ -158,15 +159,17 @@ const LawyerCard = ({
                     );
                 }
 
-                alert("Rating submitted successfully!");
+                toast.success("Rating submitted successfully!");
             } else {
                 const errorData = await response.json();
                 if (isDev) console.error("Error submitting rating:", errorData);
-                alert("Failed to submit rating. Please try again.");
+                toast.error("Failed to submit rating. Please try again.");
             }
         } catch (error) {
             if (isDev) console.error("Error submitting rating:", error);
-            alert("Network error. Please check your connection and try again.");
+            console.log(
+                "Network error. Please check your connection and try again."
+            );
         } finally {
             setSubmittingRating(false);
         }
@@ -176,18 +179,18 @@ const LawyerCard = ({
         <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-600/50 transition-all duration-300 hover:transform group">
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                         {lawyer.lawyer_profile.full_name
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold text-white group-hover:text-blue-300 transition-colors">
+                        <h3 className="text-lg font-semibold text-white group-hover:text-emerald-300 transition-colors">
                             {lawyer.lawyer_profile.full_name}
                         </h3>
                         <div className="flex items-center space-x-2">
-                            <span className="text-sm text-blue-400">
+                            <span className="text-sm text-emerald-400">
                                 {getSpecializationLabel(
                                     lawyer.lawyer_profile.specialization
                                 )}
@@ -239,7 +242,7 @@ const LawyerCard = ({
                 </div>
                 <div className="bg-gray-700 p-3 rounded-lg">
                     <div className="flex items-center space-x-2">
-                        <Users className="w-4 h-4 text-blue-400" />
+                        <Users className="w-4 h-4 text-emerald-400" />
                         <div>
                             <div className="text-xs text-gray-400">
                                 Serving Clients
@@ -281,7 +284,7 @@ const LawyerCard = ({
                                             onClick={() =>
                                                 setShowRatingForm(true)
                                             }
-                                            className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                            className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
                                         >
                                             Rate this lawyer
                                         </button>
@@ -306,7 +309,7 @@ const LawyerCard = ({
                                                         selectedRating === 0 ||
                                                         submittingRating
                                                     }
-                                                    className="px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm rounded-md transition-colors"
+                                                    className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm rounded-md transition-colors"
                                                 >
                                                     {submittingRating
                                                         ? "Submitting..."
@@ -339,7 +342,7 @@ const LawyerCard = ({
                         onClick={() =>
                             handleSendRequest(lawyer.lawyer_profile.id)
                         }
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
                     >
                         <MessageCircle className="w-4 h-4" />
                         <span>Send Request</span>

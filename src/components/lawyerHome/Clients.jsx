@@ -20,11 +20,11 @@ const STATUS_COLORS = {
     pending: "bg-yellow-600/20 text-yellow-400",
     accepted: "bg-green-600/20 text-green-400",
     rejected: "bg-red-600/20 text-red-400",
-    completed: "bg-blue-600/20 text-blue-400",
+    completed: "bg-emerald-600/20 text-emerald-400",
     cancelled: "bg-gray-600/20 text-gray-400",
 };
 
-const Clients = ({ clients, handleClientRequest }) => {
+const Clients = ({ clients, handleClientRequest, fetchClients }) => {
     const handleAccept = (clientId) => {
         if (isDev) console.log("Accepting client hire request:", clientId);
         if (handleClientRequest) handleClientRequest(clientId, "accepted");
@@ -123,14 +123,14 @@ const Clients = ({ clients, handleClientRequest }) => {
                             <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
                                 <div className="bg-gray-700/30 backdrop-blur-sm p-4 rounded-xl border border-gray-600/20 hover:bg-gray-700/40 transition-all duration-200">
                                     <div className="flex items-center space-x-3">
-                                        <div className="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                                            <Briefcase className="w-4 h-4 text-blue-400" />
+                                        <div className="w-8 h-8 bg-emerald-600/20 rounded-lg flex items-center justify-center">
+                                            <Briefcase className="w-4 h-4 text-emerald-400" />
                                         </div>
                                         <div>
                                             <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
                                                 Active Cases
                                             </p>
-                                            <p className="text-xl font-bold text-blue-400 mt-1">
+                                            <p className="text-xl font-bold text-emerald-400 mt-1">
                                                 {client.activeCases}
                                             </p>
                                         </div>
@@ -169,7 +169,7 @@ const Clients = ({ clients, handleClientRequest }) => {
                                     </div>
                                     <div className="w-full bg-gray-700/50 rounded-full h-1.5">
                                         <div
-                                            className="bg-gradient-to-r from-blue-600 to-blue-500 h-1.5 rounded-full transition-all duration-500"
+                                            className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-1.5 rounded-full transition-all duration-500"
                                             style={{
                                                 width: `${
                                                     (client.activeCases /

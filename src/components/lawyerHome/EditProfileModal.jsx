@@ -175,7 +175,7 @@ const EditProfileModal = ({
                             />
                             <label
                                 htmlFor="profile-picture"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm cursor-pointer flex items-center space-x-2 transition-colors"
+                                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm cursor-pointer flex items-center space-x-2 transition-colors"
                             >
                                 <Upload className="w-4 h-4" />
                                 <span>Change Photo</span>
@@ -312,7 +312,7 @@ const EditProfileModal = ({
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                            className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors"
                         >
                             {isLoading ? (
                                 <>
